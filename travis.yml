@@ -1,4 +1,9 @@
 language: node_js
-rvm:
- - 10.16.3
- - express
+node_js:
+ - "stable"
+
+before_script:
+  - npm install
+
+script:
+  - client/src/App.test.js
