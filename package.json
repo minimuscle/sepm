@@ -1,0 +1,22 @@
+{
+  "name": "tour_guide_manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "api": "cd api && node .",
+    "client": "cd client && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minimuscle/sepm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minimuscle/sepm/issues"
+  },
+  "homepage": "https://github.com/minimuscle/sepm#readme"
+}
