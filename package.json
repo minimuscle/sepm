@@ -8,7 +8,7 @@
     "dev-api": "cd api && nodemon",
     "api": "cd api && node .",
     "client": "cd client && yarn start",
-    "test": "cd client && yarn test"
+    "test": "cd client && yarn && yarn test"
   },
   "repository": "git+https://github.com/minimuscle/sepm.git",
   "keywords": [],
