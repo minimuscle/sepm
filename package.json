@@ -8,12 +8,9 @@
     "client": "cd client && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/minimuscle/sepm.git"
-  },
+  "repository": "git+https://github.com/minimuscle/sepm.git",
   "keywords": [],
-  "author": "",
+  "author": "minimuscle <joshthiele@live.com.au>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/minimuscle/sepm/issues"
