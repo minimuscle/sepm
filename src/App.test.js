@@ -4,5 +4,6 @@ import React from 'react';
 
 //Sidebar exists
 test("App to exist", () => {
-    expect(App).toBeDefined();
+    expect(App).toMatchSnapshot();
 })
+
