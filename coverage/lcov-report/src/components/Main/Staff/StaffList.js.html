@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/components/Main/Staff/StaffList.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">src/components/Main/Staff</a> StaffList.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { Component } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import 'components/Main/style.css';</span>
+<span class="cstat-no" title="statement not covered" >import api from '../../../api';</span>
+<span class="cstat-no" title="statement not covered" >import Loadable from '../../Loadable';</span>
+<span class="cstat-no" title="statement not covered" >import { Table, TableRow } from 'semantic-ui-react';</span>
+&nbsp;
+const tableHeader = <span class="cstat-no" title="statement not covered" >[</span>
+  "ID",
+  "Name",
+  "Type", // TODO name for this
+  "Skills",
+];
+// TODO add column for allocated tasks
+&nbsp;
+// TODO add styling for the table + new &lt;div className="table-header"
+class StaffList extends Component {
+<span class="fstat-no" title="function not covered" >  render</span>() {
+<span class="cstat-no" title="statement not covered" >    return (</span>
+      &lt;div className="content"&gt;
+        &lt;Loadable promise={new api(this.props.token).getStaff()}&gt;
+          {<span class="fstat-no" title="function not covered" >(r</span>esponse, error, loading) =&gt; {
+<span class="cstat-no" title="statement not covered" >            if (loading) {</span>
+<span class="cstat-no" title="statement not covered" >              return &lt;div&gt;loading&lt;/div&gt;;</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >              return (</span>
+                &lt;div&gt;
+                  &lt;Table striped&gt;
+                    &lt;Table.Header&gt;
+                      &lt;Table.Row&gt;
+                        {tableHeader.map(<span class="fstat-no" title="function not covered" >(h</span>eaders, i) =&gt; 
+<span class="cstat-no" title="statement not covered" >                         &lt;Table.HeaderCell key={i}&gt;{headers}&lt;/Table.HeaderCell&gt;</span>
+                        )}
+                      &lt;/Table.Row&gt;
+                    &lt;/Table.Header&gt;
+                    &lt;Table.Body&gt;
+                      {response.map(<span class="fstat-no" title="function not covered" >(d</span>ata, j) =&gt; (
+<span class="cstat-no" title="statement not covered" >                        &lt;Table.Row key={j}&gt;</span>
+                          &lt;Table.Cell&gt;{data.id}&lt;/Table.Cell&gt;
+                          &lt;Table.Cell&gt;{data.name}&lt;/Table.Cell&gt;
+                          &lt;Table.Cell&gt;{data.staffType}&lt;/Table.Cell&gt;
+                          &lt;Table.Cell&gt;{data.skills.join(', ')}&lt;/Table.Cell&gt;
+                        &lt;/Table.Row&gt;
+                      ))}
+                    &lt;/Table.Body&gt;
+                  &lt;/Table&gt;
+                &lt;/div&gt;
+              );
+            }
+          }}
+        &lt;/Loadable&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+&nbsp;
+export default StaffList;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Aug 11 2020 17:15:23 GMT+1000 (Australian Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

@@ -1,24 +1,37 @@
 {
-  "name": "tour_guide_manager",
-  "version": "1.0.0",
-  "description": "",
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
   "main": "index.js",
-  "scripts": {
-    "dev": "concurrently \"yarn dev-api\" \"yarn client\"",
-    "dev-api": "cd api && nodemon",
-    "api": "cd api && node .",
-    "client": "cd client && yarn start",
-    "test": "cd client && yarn && yarn test"
-  },
-  "repository": "git+https://github.com/minimuscle/sepm.git",
-  "keywords": [],
-  "author": "minimuscle <joshthiele@live.com.au>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/minimuscle/sepm/issues"
-  },
-  "homepage": "https://github.com/minimuscle/sepm#readme",
   "dependencies": {
-    "concurrently": "^5.3.0"
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.11.2",
+    "jest-fetch-mock": "^2.1.2",
+    "lodash": "^4.17.11",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "react-scripts": "2.1.8",
+    "react-test-renderer": "^16.8.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "coverage": "react-scripts test --env=jsdom --coverage",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "coveralls": "^3.1.0",
+    "wait-on": "^3.2.0"
   }
 }
