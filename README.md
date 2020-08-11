@@ -1,6 +1,6 @@
 # Tour Guide Manager
 
-![Travis (.com)](https://img.shields.io/travis/com/minimuscle/sepm) ![GitHub issues](https://img.shields.io/github/issues/minimuscle/sepm) ![GitHub top language](https://img.shields.io/github/languages/top/minimuscle/sepm)
+![Travis (.com)](https://img.shields.io/travis/com/minimuscle/sepm) ![GitHub issues](https://img.shields.io/github/issues/minimuscle/sepm) ![GitHub top language](https://img.shields.io/github/languages/top/minimuscle/sepm) [![Coverage Status](https://coveralls.io/repos/github/minimuscle/sepm/badge.svg?branch=master)](https://coveralls.io/github/minimuscle/sepm?branch=master)
 
 Tour Guide Manager is a software solution for the RMIT University class "Software Engineering Project Management". The following documentation will explain how to run the project.
 

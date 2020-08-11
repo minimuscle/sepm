@@ -1,3 +1,17 @@
 language: node_js
 node_js:
- - "stable"
+  - "stable"
+cache:
+  directories:
+  - node_modules
+script:
+  - yarn test -- --coverage # Include coverage when running tests
+after_script: # Upload coverage reports 
+  - COVERALLS_REPO_TOKEN=kOlTjFYqxaXY6AfoZjxui5d5qIa6FRMGm npm run coveralls
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: d1cc63b3b255a6e11f02ada3c44019ac9e830af0
+  local_dir: build
+  on:
+    branch: master
