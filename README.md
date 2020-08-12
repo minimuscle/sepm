@@ -15,16 +15,14 @@ yarn --version
 Installation of the node.js packages. 
 ```bash
 yarn
-cd api
-yarn
-cd ../client
+cd src/api
 yarn
 ```
 
 The `yarn` command is the same as `npm install`, and actually has the same command (`yarn install`). All 3 are needed as there are essentially 3 services, with the main folder serving only as the launching platform for both the server and the client.
 
 ## Running the Software
-This software is run using ***Node.js*** as the backend, and ***React.js*** as the front end. They are able to be independantly run, or run together at the same time using the concurrently package. The server is able to be activated from the `./client/` folder, this is to ensure less steps, however, it is functionally the same as navigating to the `./api/` folder and starting the server there.
+This software is run using ***Node.js*** as the backend, and ***React.js*** as the front end. They are able to be independantly run, or run together at the same time using the concurrently package. The server is able to be activated from the `home` folder, this is to ensure less steps, however, it is functionally the same as navigating to the `./src/api/` folder and starting the server there.
 
 There are 3 ways to start the servers, below will be the various ways. We recommend the **FIRST** way, as it will be the quickest. However, it may cause errors, so please use the *other* methods before reporting any bugs. The development team also implement a service known as ***Nodemon***. This allows the node.js server to be running while in development, and as such it reloads the server when any changes to the code is saved. 
 *Note: Nodemon should **NEVER** be used in production and only in development.*
@@ -34,20 +32,23 @@ Recommended way:
 yarn dev
 
 # Runs the following:
-concurrently "yarn dev-api" "yarn client"
+concurrently "yarn start" "cd api && nodemon"
 # This runs 2 commands at the same time, which is good for testing, NOT for production.
-# yarn dev-api - runs the node.js server
+
+# cd api && nodemon - runs the node.js server
 cd api && nodemon
-# yarn client - runs the react.js client
-cd client && yarn start
+
+# yarn start - runs the react.js client
+yarn start
 ```
 
 Not using Concurrently:
 ```bash
-yarn dev-api
+cd api
+nodemon
 
 # Open a new Terminal Tab
-yarn client
+yarn start
 ```
 
 Production Release. This would be used when you want to test a production environment:
@@ -56,17 +57,15 @@ cd api
 node .
 
 # Open a new Terminal Tab
-cd client
 yarn start
 ```
 
 ## Testing
-Testing is essential within the project, and as thus, testing will be completed throughout the entire project. We aim to have 100% testing coverage. We have yet to implement a coverage monitor. To test, several different commands must be completed:
+Testing is essential within the project, and as thus, testing will be completed throughout the entire project. We aim to have 100% testing coverage. Please use the coverage badge at the top to see the coverage. This is readjusted every time a new push to the branch is set.
 
 Testing React.js:
 ```bash
-cd client
 yarn test
 ```
 
-Currently there is no testing suites setup for the node.js server, but when completed, will be added to this README.
+*Editing badge: Change `branch=master` in the badges to `branch=<your current branch>` for each new readme*
