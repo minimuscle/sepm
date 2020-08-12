@@ -14,7 +14,7 @@
     "react-test-renderer": "^16.8.6"
   },
   "scripts": {
-    "dev": "concurrently \"yarn start\" \"cd api && nodemon\"",
+    "dev": "concurrently \"yarn start\" \"cd src/api && nodemon\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
