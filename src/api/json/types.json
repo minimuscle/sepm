@@ -1,0 +1,17 @@
+[
+    {
+        "name": "General Kids",
+        "tours": []
+    },
+    {
+        "name": "General Adults",
+        "tours": []
+    },
+    {
+        "name": "Greenvale Primary School",
+        "tours": [
+            "Tour 1",
+            "tour 2"
+        ]
+    }
+]
