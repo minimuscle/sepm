@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
-import Tours from './components/Tours';
-import Types from './components/Types';
-import AddTypes from './components/AddTypes';
+import Tours from './components/Tours/Tours';
+import AddTours from './components/Tours/AddTours';
+import Types from './components/TourTypes/Types';
+import AddTypes from './components/TourTypes/AddTypes';
+import EditTypes from './components/TourTypes/EditTypes';
 
 //Boostrap Imports - Design work
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -16,27 +18,33 @@ class App extends Component {
     }
   }
 
-  updateView(view){
+  updateView(view) {
     this.setState({
       view: view
     })
   }
 
 
-  renderComponents(){
-    switch(this.state.view){
+  renderComponents() {
+    switch (this.state.view) {
       case 'tours':
-        return <Tours/>
+        return <Tours view={this.updateView.bind(this)} />
 
       case 'types':
         //The bind sets the 'view' to the variable that is set in <Types/>
-        return <Types view={this.updateView.bind(this)}/>
-      
+        return <Types view={this.updateView.bind(this)} />
+
+      case 'add-tour':
+        return <AddTours />
+
       case 'add-type':
-        return <AddTypes/>
+        return <AddTypes />
+
+      case 'edit-type':
+        return <EditTypes />
       //Default means that if there is an error or not a 'case' then it defaults to the tours page
       default:
-        return <Tours/>
+        return <Tours view={this.updateView.bind(this)}/>
     }
   }
 

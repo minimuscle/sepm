@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import '../App.css';
+import '../../App.css';
 
 //Boostrap Imports - Design work
-import { Container, Row, Table } from 'react-bootstrap';
+import { Container, Row, Table, Button } from 'react-bootstrap';
 
 class Tours extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class Tours extends Component {
     }
   }
 
+  //This "fetches" the API which is set up to get the tours json data
   componentDidMount() {
     fetch('http://localhost:9000/api/get/tours')
       .then(res => res.json())
@@ -40,26 +41,31 @@ class Tours extends Component {
     }
   }
 
+  changeView(view) {
+    this.props.view(view);
+  }
+
   render() {
     return (
       <Container>
-          {/** TODO: Add CSS to this instead of the BRs */}
-          <Row><h1>Tours</h1><br /><br /><br /></Row>
-          <Row md="auto">
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Locations</th>
-                  <th>Total Time</th>
-                </tr>
-                {/** TODO: Insert Tour Data here */}
-                {this.renderTours()}
-              </thead>
-            </Table>
-          </Row>
-        </Container>
+        <Row><h1>Tours</h1></Row>
+        <Button onClick={() => this.changeView('add-tour')}>Add New Tour</Button>
+    {/*<Button onClick={() => this.changeView('edit-tour')}>Edit Tour</Button>*/}
+        <Row md="auto">
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Locations</th>
+                <th>Total Time</th>
+              </tr>
+              {/** TODO: Insert Tour Data here */}
+              {this.renderTours()}
+            </thead>
+          </Table>
+        </Row>
+      </Container>
     )
   }
 }

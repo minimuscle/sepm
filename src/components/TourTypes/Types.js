@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../App.css';
+import '../../App.css';
 
 //Boostrap Imports - Design work
 import { Container, Row, Table, Button } from 'react-bootstrap';
@@ -50,6 +50,7 @@ class Tours extends Component {
           <Row><h1>Tour Types</h1><br /><br /><br /></Row>
           <Row md="auto">
             <Button onClick={() => this.changeView('add-type')}>Add New Type</Button>
+            <Button onClick={() => this.changeView('edit-type')}>Edit Tour Type</Button>
             <Table striped bordered hover>
               <thead>
                 <tr>

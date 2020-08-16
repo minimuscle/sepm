@@ -59,5 +59,42 @@
             "Location8, Location7"
         ],
         "time": "17"
+    },
+    {
+        "name": "555",
+        "type": "General Kids",
+        "locations": [
+            "Bag of Potatoes",
+            "Bag of Potatoes4",
+            "Location7"
+        ],
+        "time": "8"
+    },
+    {
+        "name": "ffdfd",
+        "type": "General Kids",
+        "locations": [
+            "Bag of Potatoes",
+            "Bag of Potatoes2"
+        ],
+        "time": "8"
+    },
+    {
+        "name": "wow",
+        "type": "General Kids",
+        "locations": [
+            "Bag of Potatoes"
+        ],
+        "time": "8"
+    },
+    {
+        "name": "Farmdale High School",
+        "type": "General Kids",
+        "locations": [
+            "Bag of Potatoes6",
+            "Location7",
+            "Location8"
+        ],
+        "time": "8"
     }
 ]

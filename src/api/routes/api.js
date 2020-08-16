@@ -5,6 +5,7 @@ const router = express.Router();
 
 const tours = require('../json/tours.json');
 const types = require('../json/types.json');
+const locations = require('../json/locations.json');
 
 function checkDuplicate(data, input) {
     var matches = 0
@@ -31,10 +32,31 @@ function validateTypes(input) {
     }
 }
 
+function validateLocation(input) {
+    if(input.hasOwnProperty('name') && input.hasOwnProperty('coordinates') && input.hasOwnProperty('description') && input.hasOwnProperty('time')){
+        return true
+    } else {
+        return false
+    }
+}
+
+function validateTour(input) {
+    if(input.hasOwnProperty('name') && input.hasOwnProperty('type') && input.hasOwnProperty('locations') && input.hasOwnProperty('time')){
+        return true
+    } else {
+        return false
+    }
+}
+
+function updateTypes(data, input) {
+    var index = data.findIndex(obj => obj.name == input.name);
+    data[index].name = input.name
+    data[index].tours = input.tours
+}
+
 //Test Command
 router.get('/', (req, res) => {
 	console.log("GET recieved")
-	res.send("GET recieved")
 });
 
 
@@ -51,9 +73,11 @@ router.use('/get/types', (req, res) => {
     })
 });
 
-
-
-
+router.get('/get/locations', function(req, res, next) {
+    res.json({
+        data: locations
+    })
+});
 
 
 //Post Data
@@ -61,16 +85,52 @@ router.post('/add/types', function(req, res, next) {
     isDuplicate = checkDuplicate(types, req.body.name)
     isValidType = validateTypes(req.body)
     
-    if(!isDuplicate && isValidLocation) {
+    if(!isDuplicate && isValidType) {
         types.push(req.body)
-        writeJson(types, "jsons/types.json")
-        res.send("SUCCESS: Tour Type added.")
-    } else if (!isValidLocation) {
-        res.send("ERROR: Invalid Tour Type.")
+        writeJson(types, "json/types.json")
+        console.log("SUCCESS: Tour Type added.")
+    } else if (!isValidType) {
+        console.log("ERROR: Invalid Tour Type.")
     } else if (isDuplicate){
-        res.send("ERROR: Duplicate Tour Types.")
+        console.log("ERROR: Duplicate Tour Types.")
+        console.log("DUPLICATE TOUR TYPE")
     } else {
-        res.send("ERROR: Unknown.")
+        console.log("ERROR: Unknown.")
     }
 });
+
+router.post('/add/tour', function(req, res, next) {
+    isDuplicate = checkDuplicate(tours, req.body.name)
+    isValidTour = validateTour(req.body)
+    
+    if(!isDuplicate && isValidTour) {
+        tours.push(req.body)
+        writeJson(tours, "json/tours.json")
+        console.log("SUCCESS: Tour added.")
+    } else if (!isValidTour) {
+        console.log("ERROR: Invalid tour.")
+    } else if (isDuplicate){
+        console.log("ERROR: Duplicate tours.")
+    } else {
+        console.log("ERROR: Unknown.")
+    }
+});
+
+router.post('/edit/types', function(req, res, next) {
+    isDuplicate = checkDuplicate(types, req.body.name)
+    isValidType = validateTypes(req.body)
+
+    if(isDuplicate && isValidType) {
+        updateTypes(types, req.body)
+        writeJson(types, "json/types.json")
+        console.log("SUCCESS: Tour updated.")
+    } else if(!isDuplicate) {
+        console.log("ERROR: Tour does not exist.")
+    } else if(!isValidType) {
+        console.log("ERROR: Invalid tour.")
+    } else {
+        console.log("ERROR: Unknown.")
+    }
+});
+
 module.exports = router;
