@@ -32,7 +32,6 @@ class Tours extends Component {
             <tr key={key}>
               <td>{key}</td>
               <td>{val.name}</td>
-              <td>{val.tours.join(', ')}</td>
             </tr>
           )
         }))
@@ -56,7 +55,6 @@ class Tours extends Component {
                 <tr>
                   <th>ID</th>
                   <th>Tour Type</th>
-                  <th>Tours</th>
                 </tr>
                 {this.renderTours()}
               </thead>

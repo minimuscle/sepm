@@ -10,9 +10,11 @@ export default class Tours extends Component {
     super(props);
     this.state = {
       locations: '',
+      types: '',
       name: '',
       types: [],
-      checked: false
+      checked: false,
+      radio: ''
     }
   }
 
@@ -24,10 +26,22 @@ export default class Tours extends Component {
           this.setState({ locations: [...this.state.locations, ...res.data] })
         }
       });
+
+    fetch('http://localhost:9000/api/get/types')
+      .then(res => res.json())
+      .then(res => {
+        if (res && res.data) {
+          this.setState({ types: [...this.state.types, ...res.data] })
+        }
+      });
   }
 
   handleChange = (event) => {
     this.setState({ name: event.target.value })
+  }
+
+  handleRadioChange = (event) => {
+    this.setState({ radio: event.target.value })
   }
 
   handleCheckChange = (event) => {
@@ -44,14 +58,14 @@ export default class Tours extends Component {
       })
     } else if (!event.target.checked) {
       const newType = event.target.value
-      this.setState({ checked: event.target.checked}, () => {
+      this.setState({ checked: event.target.checked }, () => {
         locationList.splice(locationList.indexOf(newType), 1)
       })
     }
   }
 
   handleSubmit = () => {
-    const { name } = this.state
+    const { name, radio } = this.state
 
     fetch('http://localhost:9000/api/add/tour', {
       method: 'POST',
@@ -61,7 +75,7 @@ export default class Tours extends Component {
       },
       body: JSON.stringify({
         name: name,
-        type: "General Kids",
+        type: radio,
         locations: locationList,
         time: '8'
       })
@@ -69,6 +83,7 @@ export default class Tours extends Component {
 
     console.log("DONE, Name: " + name, locationList)
   }
+
 
   renderLocations() {
     if (this.state.locations.length <= 0) {
@@ -89,6 +104,26 @@ export default class Tours extends Component {
     }
   }
 
+  renderTourTypes() {
+    if (this.state.types.length <= 0) {
+      return <tr><td colSpan="4">Loading...</td></tr>
+    } else {
+      return (
+        this.state.types.map((val, key) => {
+          return (
+            <Form.Check
+              type="radio"
+              value={val.name}
+              checked={this.state.radio === val.name}
+              onChange={this.handleRadioChange}
+              id={key}
+              label={val.name}
+            />
+          )
+        }))
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -99,13 +134,22 @@ export default class Tours extends Component {
             <Form.Control required onChange={this.handleChange} type="text" placeholder="Farmdale Primary School" />
           </Form.Group>
           <Form.Group controlId="">
-            <Form.Label>Locationss:</Form.Label>
+            <Form.Label>Locations:</Form.Label>
             {['checkbox'].map((type) => (
               <div key={`default-${type}`} className="mb-3">
                 {this.renderLocations()}
               </div>
             ))}
           </Form.Group>
+          <Form.Group>
+            <Form.Label>Tour Type:</Form.Label>
+            {['radio'].map((type) => (
+              <div key={`default-${type}`} className="mb-3">
+                {this.renderTourTypes()}
+              </div>
+            ))}
+          </Form.Group>
+          {this.state.radio}
           <Button type="submit">
             Add Tour Type
             </Button>

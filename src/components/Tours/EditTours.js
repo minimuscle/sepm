@@ -4,16 +4,26 @@ import '../../App.css';
 //Boostrap Imports - Design work
 import { Container, Row, Form, Button } from 'react-bootstrap';
 
-const tourList = [];
+const locationList = [];
 export default class Tours extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tours: '',
+      locations: '',
       name: '',
       types: [],
       checked: false
     }
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:9000/api/get/locations')
+      .then(res => res.json())
+      .then(res => {
+        if (res && res.data) {
+          this.setState({ locations: [...this.state.locations, ...res.data] })
+        }
+      });
   }
 
   handleChange = (event) => {
@@ -30,12 +40,12 @@ export default class Tours extends Component {
       const newType = event.target.value
       this.setState({ checked: event.target.checked }, () => {
         console.log(newType)
-        tourList.push(newType)
+        locationList.push(newType)
       })
     } else if (!event.target.checked) {
       const newType = event.target.value
       this.setState({ checked: event.target.checked}, () => {
-        tourList.splice(tourList.indexOf(newType), 1)
+        locationList.splice(locationList.indexOf(newType), 1)
       })
     }
   }
@@ -43,7 +53,7 @@ export default class Tours extends Component {
   handleSubmit = () => {
     const { name } = this.state
 
-    fetch('http://localhost:9000/api/add/types', {
+    fetch('http://localhost:9000/api/add/tour', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -51,19 +61,21 @@ export default class Tours extends Component {
       },
       body: JSON.stringify({
         name: name,
-        tours: tourList
+        type: "General Kids",
+        locations: locationList,
+        time: '8'
       })
     })
 
-    console.log("DONE, Name: " + name, tourList)
+    console.log("DONE, Name: " + name, locationList)
   }
 
-  renderTours() {
-    if (this.state.tours.length <= 0) {
+  renderLocations() {
+    if (this.state.locations.length <= 0) {
       return <tr><td colSpan="4">Loading...</td></tr>
     } else {
       return (
-        this.state.tours.map((val, key) => {
+        this.state.locations.map((val, key) => {
           return (
             <Form.Check
               type="checkbox"
@@ -80,11 +92,19 @@ export default class Tours extends Component {
   render() {
     return (
       <Container>
-        <Row><h1>Add New Tour Types</h1></Row>
+        <Row><h1>Edit Tours</h1></Row>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="">
             <Form.Label>Tour Type Name:</Form.Label>
-            <Form.Control required onChange={this.handleChange} type="text" placeholder="Farmdale Primary School" />
+            <Form.Control required onChange={this.handleChange} type="text" value={this.props.title} disabled/>
+          </Form.Group>
+          <Form.Group controlId="">
+            <Form.Label>Locationss:</Form.Label>
+            {['checkbox'].map((type) => (
+              <div key={`default-${type}`} className="mb-3">
+                {this.renderLocations()}
+              </div>
+            ))}
           </Form.Group>
           <Button type="submit">
             Add Tour Type
