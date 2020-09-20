@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 //Boostrap Imports - Design work
 import { Container, Row, Table, Button } from 'react-bootstrap';
@@ -32,6 +34,8 @@ class Tours extends Component {
             <tr key={key}>
               <td>{key}</td>
               <td>{val.name}</td>
+              <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+              <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
         }))
@@ -55,6 +59,8 @@ class Tours extends Component {
                 <tr>
                   <th>ID</th>
                   <th>Tour Type</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
                 </tr>
                 {this.renderTours()}
               </thead>

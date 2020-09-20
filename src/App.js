@@ -75,7 +75,6 @@ class App extends Component {
           <Navbar.Brand onClick={() => this.updateView('tours')}>Tour Guide Manager</Navbar.Brand>
           <Navbar.Collapse>
             <Nav className='mr-auto'>
-              <Nav.Link onClick={() => this.updateView('tours')}>Home</Nav.Link>
               <Nav.Link onClick={() => this.updateView('locations')}>Locations</Nav.Link>
               <Nav.Link onClick={() => this.updateView('tours')}>Tours</Nav.Link>
               <Nav.Link onClick={() => this.updateView('types')}>Tour Types</Nav.Link>

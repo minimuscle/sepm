@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import '../../App.css';
 
 //Boostrap Imports - Design work
 import { Container, Row, Table, Button, Modal } from 'react-bootstrap';
-import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+
 
 class Tours extends Component {
   constructor(props) {

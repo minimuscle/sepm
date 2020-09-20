@@ -5,6 +5,7 @@ import '../../App.css';
 import { Container, Row, Form, Button } from 'react-bootstrap';
 
 const locationList = [];
+let totalTime = 0;
 export default class Tours extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,6 @@ export default class Tours extends Component {
       locations: '',
       types: '',
       name: '',
-      types: [],
       checked: false,
       radio: ''
     }
@@ -50,17 +50,22 @@ export default class Tours extends Component {
     This means that they will be completed AFTER the state has been set. A new variable must be set
     because the "event" is not passed through to the callback function
     */
+    const newType = event.target.value
+    const time = event.target.id
+
     if (event.target.checked) {
-      const newType = event.target.value
       this.setState({ checked: event.target.checked }, () => {
-        console.log(newType)
-        locationList.push(newType)
+        console.log(newType);
+        locationList.push(newType);
+        totalTime += parseInt(time);
+        console.log("Total Time: " + totalTime)
       })
     } else if (!event.target.checked) {
-      const newType = event.target.value
       this.setState({ checked: event.target.checked }, () => {
         locationList.splice(locationList.indexOf(newType), 1)
       })
+      totalTime -= parseInt(time);
+      console.log("Total Time: " + totalTime)
     }
   }
 
@@ -77,7 +82,7 @@ export default class Tours extends Component {
         name: name,
         type: radio,
         locations: locationList,
-        time: '8'
+        time: totalTime
       })
     })
 
@@ -95,8 +100,9 @@ export default class Tours extends Component {
             <Form.Check
               type="checkbox"
               value={val.name}
+              bsCustomPrefix={val.time}
               onChange={this.handleCheckChange}
-              id={key}
+              id={val.time}
               label={val.name}
             />
           )

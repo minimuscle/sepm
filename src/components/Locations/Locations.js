@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 //Boostrap Imports - Design work
 import { Container, Row, Table, Button } from 'react-bootstrap';
@@ -36,6 +38,8 @@ class App extends Component {
               <td>{val.coordinates}</td>
               <td>{val.description}</td>
               <td>{val.time}</td>
+              <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+              <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
         }))
@@ -63,6 +67,8 @@ class App extends Component {
                 <th>Coordinates</th>
                 <th>Description</th>
                 <th>Time</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
               {/** TODO: Insert Tour Data here */}
               {this.renderLocations()}
