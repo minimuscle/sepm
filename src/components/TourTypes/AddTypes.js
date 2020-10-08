@@ -51,7 +51,6 @@ export default class Tours extends Component {
       },
       body: JSON.stringify({
         name: name,
-        tours: tourList
       })
     })
 

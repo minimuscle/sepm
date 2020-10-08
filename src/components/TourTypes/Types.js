@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 //Boostrap Imports - Design work
-import { Container, Row, Table, Button } from 'react-bootstrap';
+import { Container, Row, Table, Button, Modal } from 'react-bootstrap';
 
 class Tours extends Component {
   constructor(props) {
@@ -34,26 +34,73 @@ class Tours extends Component {
             <tr key={key}>
               <td>{key}</td>
               <td>{val.name}</td>
-              <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-              <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+              <td><Button variant="light" onClick={() => this.editType(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+              <td><Button variant="danger" onClick={() => this.deleteType(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
         }))
     }
   }
 
+  handleClose = () => {
+    this.setState({ show: false })
+  }
+  
+  handleShow = () => {
+    this.setState({ show: true })
+  }
+
+  handleCloseDelete = () => {
+    this.setState({ show: false })
+    fetch('http://localhost:9000/api/delete/types', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: this.state.name,
+        })
+      })
+    window.location.reload();
+  }
+
   changeView(view) {
       this.props.view(view);
   }
 
+  editType(name) {
+    this.props.edit(name);
+    this.props.view('edit-type');
+  }
+
+  deleteType(name) {
+    this.setState({ name: name });
+    this.handleShow();
+  }
+
+
   render() {
     return (
       <Container>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Deletion</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to delete this tour type? It cannot be undone!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Cancel
+          </Button>
+            <Button variant="primary" onClick={this.handleCloseDelete}>
+              Confirm Deletion
+          </Button>
+          </Modal.Footer>
+          </Modal>
           {/** TODO: Add CSS to this instead of the BRs */}
-          <Row><h1>Tour Types</h1><br /><br /><br /></Row>
-          <Row md="auto">
-            <Button onClick={() => this.changeView('add-type')}>Add New Type</Button>
-            <Button onClick={() => this.changeView('edit-type')}>Edit Tour Type</Button>
+          <div className="title"><h1>Tour Types</h1>
+          <Button className="addBtn" onClick={() => this.changeView('add-type')}>Add New Type</Button></div>
+            
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -65,7 +112,6 @@ class Tours extends Component {
                 {this.renderTours()}
               </thead>
             </Table>
-          </Row>
           <Row>{this.props.view}</Row>
         </Container>
     )

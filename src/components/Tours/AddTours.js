@@ -155,7 +155,6 @@ export default class Tours extends Component {
               </div>
             ))}
           </Form.Group>
-          {this.state.radio}
           <Button type="submit">
             Add Tour Type
             </Button>

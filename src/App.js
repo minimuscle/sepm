@@ -17,7 +17,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'tours',
+      view: 'locations',
       name: ''
     }
   }
@@ -45,7 +45,7 @@ class App extends Component {
 
       case 'types':
         //The bind sets the 'view' to the variable that is set in <Types/>
-        return <Types view={this.updateView.bind(this)} />
+        return <Types view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
 
       case 'add-tour':
         return <AddTours />
@@ -60,10 +60,10 @@ class App extends Component {
         return <AddTypes />
 
       case 'edit-type':
-        return <EditTypes />
+        return <EditTypes view={this.updateView.bind(this)} title={this.state.name}/>
       //Default means that if there is an error or not a 'case' then it defaults to the tours page
       default:
-        return <Tours view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
+        return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
     }
   }
 

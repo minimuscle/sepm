@@ -258,6 +258,21 @@ router.post('/delete/tour', function(req, res, next) {
 	}
 });
 
+router.post('/delete/types', function(req, res, next) {
+	isDuplicate = checkDuplicate(types, req.body.name)
+
+	if(req.body.hasOwnProperty('name')) {
+		if(isDuplicate) {
+			deleteData(types, req.body)
+			console.log("SUCCESS: Tour Type " + req.body.name + " deleted.")
+		} else {
+			console.log("ERROR: Tour Type does not exist.")
+		}
+	} else {
+		console.log("ERROR: Invalid Tour Type.")
+	}
+});
+
 router.post('/delete/user', function(req, res, next) {
 	isDuplicate = checkDuplicate(users, req.body.username)
 

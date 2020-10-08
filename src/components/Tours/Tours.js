@@ -21,6 +21,10 @@ class Tours extends Component {
   handleClose = () => {
     this.setState({ show: false })
   }
+  
+  handleShow = () => {
+    this.setState({ show: true })
+  }
 
   handleCloseDelete = () => {
     this.setState({ show: false })
@@ -37,9 +41,7 @@ class Tours extends Component {
     window.location.reload();
   }
 
-  handleShow = () => {
-    this.setState({ show: true })
-  }
+
 
 
   //This "fetches" the API which is set up to get the tours json data
@@ -105,10 +107,10 @@ class Tours extends Component {
           </Button>
           </Modal.Footer>
         </Modal>
-        <Row><h1>Tours</h1></Row>
-        <Button onClick={() => this.changeView('add-tour')}>Add New Tour</Button>
+        <div className="title"><h1>Tours</h1>
+        <Button className="addBtn" onClick={() => this.changeView('add-tour')}>Add New Tour</Button></div>
+        
         {/*<Button onClick={() => this.changeView('edit-tour')}>Edit Tour</Button>*/}
-        <Row md="auto">
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -124,7 +126,6 @@ class Tours extends Component {
               {this.renderTours()}
             </thead>
           </Table>
-        </Row>
       </Container>
     )
   }

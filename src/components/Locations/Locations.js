@@ -4,13 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 //Boostrap Imports - Design work
-import { Container, Row, Table, Button } from 'react-bootstrap';
+import { Container, Row, Table, Button, Modal } from 'react-bootstrap';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locations: ''
+      locations: '',
+      name: '',
+      show: false
     }
   }
 
@@ -39,7 +41,7 @@ class App extends Component {
               <td>{val.description}</td>
               <td>{val.time}</td>
               <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-              <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+              <td><Button variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
         }))
@@ -50,15 +52,56 @@ class App extends Component {
     this.props.view(view);
   }
 
+  deleteLocation(name) {
+    this.setState({ name: name });
+    this.handleShow();
+  }
+
+  handleClose = () => {
+    this.setState({ show: false })
+  }
+  
+  handleShow = () => {
+    this.setState({ show: true })
+  }
+
+  handleCloseDelete = () => {
+    this.setState({ show: false })
+    fetch('http://localhost:9000/api/delete/location', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: this.state.name,
+        })
+      })
+    window.location.reload();
+  }
 
 
   render() {
     return (
       <Container>
-        <Row><h1>Locations</h1></Row>
-        <Button onClick={() => this.changeView('add-location')}>Add New Location</Button>
-        {/*<Button onClick={() => this.changeView('edit-tour')}>Edit Tour</Button>*/}
-        <Row md="auto">
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Deletion</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to delete this location? It cannot be undone!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Cancel
+          </Button>
+            <Button variant="primary" onClick={this.handleCloseDelete}>
+              Confirm Deletion
+          </Button>
+          </Modal.Footer>
+        </Modal>
+        <div className="title"><h1>Locations</h1>
+        <Button className="addBtn" onClick={() => this.changeView('add-location')}>Add New Location</Button>
+        </div>
+        
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -74,7 +117,6 @@ class App extends Component {
               {this.renderLocations()}
             </thead>
           </Table>
-        </Row>
       </Container>
     )
   }
