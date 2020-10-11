@@ -19,7 +19,10 @@ class App extends Component {
     super(props);
     this.state = {
       view: 'locations',
-      name: ''
+      edit_name: '',
+      edit_coordinates: '',
+      edit_description: '',
+      edit_types: '',
     }
   }
 
@@ -29,9 +32,23 @@ class App extends Component {
     })
   }
 
+
+  //Set Edit "X" to be that when the prop is set by a component
+
+
   setName(name) {
     this.setState({
-      name: name
+      edit_name: name
+    })
+  }
+  setCoordinates(name) {
+    this.setState({
+      edit_coordinates: name
+    })
+  }
+  setDescription(name) {
+    this.setState({
+      edit_description: name
     })
   }
 
@@ -55,10 +72,10 @@ class App extends Component {
         return <AddLocations />
 
       case 'edit-location':
-        return <EditLocations view={this.updateView.bind(this)} title={this.state.name} />
+        return <EditLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
       case 'locations':
-        return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
+        return <Locations view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)}/>
 
       case 'add-type':
         return <AddTypes />

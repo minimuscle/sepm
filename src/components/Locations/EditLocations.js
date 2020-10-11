@@ -8,10 +8,9 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locations: '',
-      name: '',
-      coordinates: '',
-      description: ''
+      name: this.props.name,
+      coordinates: this.props.coordinates,
+      description: this.props.description,
     }
   }
 
@@ -33,7 +32,7 @@ export default class App extends Component {
     const wordCount = description.match(/(\w+)/g).length;
     const TTStime = Math.floor((wordCount/150)*60);
 
-    fetch('http://localhost:9000/api/add/location', {
+    fetch('http://localhost:9000/api/edit/location', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -74,15 +73,15 @@ export default class App extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
             <Form.Label>Location Name:</Form.Label>
-            <Form.Control required onChange={this.handleNameChange} type="text" placeholder="Solar System Model" value={this.props.title} disabled />
+            <Form.Control required onChange={this.handleNameChange} type="text" placeholder="Solar System Model" defaultValue={this.state.name} disabled />
           </Form.Group>
           <Form.Group>
             <Form.Label>Coordinates:</Form.Label>
-            <Form.Control required onChange={this.handleCoordinateChange} type="text" placeholder="24D" />
+            <Form.Control required onChange={this.handleCoordinateChange} type="text" defaultValue={this.state.coordinates} />
           </Form.Group>
           <Form.Group>
             <Form.Label>Description:</Form.Label>
-            <Form.Control required onChange={this.handleDescriptionChange} as="textarea" rows="5" placeholder="The Solar System is where Earth is located..." />
+            <Form.Control required onChange={this.handleDescriptionChange} as="textarea" rows="5" defaultValue={this.state.description} />
           </Form.Group>
           <Button type="submit">
             Save Location

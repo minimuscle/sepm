@@ -55,7 +55,22 @@ function updateTypes(data, input) {
 
 function deleteData(data, input) {
 	var index = data.findIndex(obj => obj.name == input.name);
-	data.splice(index, index);
+    let spliced = data.splice(index, 1);
+    console.log(spliced)
+}
+
+function updateLocation(data, input) {
+    var index = data.findIndex(obj => obj.name == input.name);
+    data[index].coordinates = input.coordinates
+    data[index].description = input.description
+    data[index].time = input.time
+}
+
+function updateTour(data, input) {
+    var index = data.findIndex(obj => obj.name == input.name);
+    data[index].type = input.type
+    data[index].locations = input.locations
+    data[index].time = input.time
 }
 
 //Test Command

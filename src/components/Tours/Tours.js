@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
 import '../../App.css';
 
 //Boostrap Imports - Design work
@@ -69,6 +69,7 @@ class Tours extends Component {
               <td>{val.type}</td>
               <td>{val.time}</td>
               <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+              <td><Button variant="light" onClick={() => this.copyTour(val.name)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
               <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
@@ -83,6 +84,11 @@ class Tours extends Component {
   editTour(name) {
     this.props.edit(name);
     this.props.view('edit-tour');
+  }
+
+  copyTour(name) {
+    this.props.edit(name);
+    this.props.view('copy-tour');
   }
 
   deleteTour(name) {
@@ -120,6 +126,7 @@ class Tours extends Component {
                 <th>Types</th>
                 <th>Total Time</th>
                 <th>Edit</th>
+                <th>Copy</th>
                 <th>Delete</th>
               </tr>
               {/** TODO: Insert Tour Data here */}
