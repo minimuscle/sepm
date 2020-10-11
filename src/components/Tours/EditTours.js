@@ -5,6 +5,7 @@ import '../../App.css';
 import { Container, Row, Form, Button } from 'react-bootstrap';
 
 const locationList = [];
+let totalTime = 0;
 export default class Tours extends Component {
   constructor(props) {
     super(props);
@@ -36,19 +37,25 @@ export default class Tours extends Component {
     This means that they will be completed AFTER the state has been set. A new variable must be set
     because the "event" is not passed through to the callback function
     */
+    const newType = event.target.value
+    const time = event.target.id
+
     if (event.target.checked) {
-      const newType = event.target.value
       this.setState({ checked: event.target.checked }, () => {
-        console.log(newType)
-        locationList.push(newType)
+        console.log(newType);
+        locationList.push(newType);
+        totalTime += parseInt(time);
+        console.log("Total Time: " + totalTime)
       })
     } else if (!event.target.checked) {
-      const newType = event.target.value
-      this.setState({ checked: event.target.checked}, () => {
+      this.setState({ checked: event.target.checked }, () => {
         locationList.splice(locationList.indexOf(newType), 1)
       })
+      totalTime -= parseInt(time);
+      console.log("Total Time: " + totalTime)
     }
   }
+
 
   handleSubmit = () => {
     const { name } = this.state
@@ -63,7 +70,7 @@ export default class Tours extends Component {
         name: name,
         type: "General Kids",
         locations: locationList,
-        time: '8'
+        time: totalTime
       })
     })
 
@@ -96,7 +103,7 @@ export default class Tours extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="">
             <Form.Label>Tour Type Name:</Form.Label>
-            <Form.Control required onChange={this.handleChange} type="text" value={this.props.title} disabled/>
+            <Form.Control required onChange={this.handleChange} type="text" value={this.props.title} disabled />
           </Form.Group>
           <Form.Group controlId="">
             <Form.Label>Locationss:</Form.Label>

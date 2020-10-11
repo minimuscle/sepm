@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 //Boostrap Imports - Design work
-import { Container, Row, Table, Button, Modal } from 'react-bootstrap';
+import { Container, Table, Button, Modal } from 'react-bootstrap';
 
 class App extends Component {
   constructor(props) {
@@ -40,7 +40,8 @@ class App extends Component {
               <td>{val.coordinates}</td>
               <td>{val.description}</td>
               <td>{val.time}</td>
-              <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+              <td><Button variant="light" onClick={() => this.editLocation(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+              <td><Button variant="light" onClick={() => this.copyLocation(val.name)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
               <td><Button variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
@@ -50,6 +51,16 @@ class App extends Component {
 
   changeView(view) {
     this.props.view(view);
+  }
+
+  editLocation(name) {
+    this.props.edit(name);
+    this.props.view('edit-location');
+  }
+
+  copyLocation(name) {
+    this.props.edit(name);
+    this.props.view('copy-location');
   }
 
   deleteLocation(name) {
@@ -111,6 +122,7 @@ class App extends Component {
                 <th>Description</th>
                 <th>Time</th>
                 <th>Edit</th>
+                <th>Copy</th>
                 <th>Delete</th>
               </tr>
               {/** TODO: Insert Tour Data here */}

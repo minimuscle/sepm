@@ -4,7 +4,7 @@ import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import '../../App.css';
 
 //Boostrap Imports - Design work
-import { Container, Row, Table, Button, Modal } from 'react-bootstrap';
+import { Container, Table, Button, Modal } from 'react-bootstrap';
 
 
 class Tours extends Component {

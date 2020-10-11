@@ -8,6 +8,7 @@ import AddTypes from './components/TourTypes/AddTypes';
 import EditTypes from './components/TourTypes/EditTypes';
 import Locations from './components/Locations/Locations';
 import AddLocations from './components/Locations/AddLocations';
+import EditLocations from './components/Locations/EditLocations';
 
 //Boostrap Imports - Design work
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -38,14 +39,14 @@ class App extends Component {
   renderComponents() {
     switch (this.state.view) {
       case 'tours':
-        return <Tours view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
+        return <Tours view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
       case 'edit-tour':
-        return <EditTours view={this.updateView.bind(this)} title={this.state.name}/>
+        return <EditTours view={this.updateView.bind(this)} title={this.state.name} />
 
       case 'types':
         //The bind sets the 'view' to the variable that is set in <Types/>
-        return <Types view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
+        return <Types view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
       case 'add-tour':
         return <AddTours />
@@ -53,17 +54,20 @@ class App extends Component {
       case 'add-location':
         return <AddLocations />
 
+      case 'edit-location':
+        return <EditLocations view={this.updateView.bind(this)} title={this.state.name} />
+
       case 'locations':
-        return <Locations view={this.updateView.bind(this)}/>
+        return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
 
       case 'add-type':
         return <AddTypes />
 
       case 'edit-type':
-        return <EditTypes view={this.updateView.bind(this)} title={this.state.name}/>
+        return <EditTypes view={this.updateView.bind(this)} title={this.state.name} />
       //Default means that if there is an error or not a 'case' then it defaults to the tours page
       default:
-        return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)}/>
+        return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
     }
   }
 
@@ -72,7 +76,7 @@ class App extends Component {
       <Container fluid>
         <Navbar bg="dark" variant="dark">
           {/** TODO: Change other tours to be their actual pages */}
-          <Navbar.Brand onClick={() => this.updateView('tours')}>Tour Guide Manager</Navbar.Brand>
+          <Navbar.Brand>Tour Guide Manager</Navbar.Brand>
           <Navbar.Collapse>
             <Nav className='mr-auto'>
               <Nav.Link onClick={() => this.updateView('locations')}>Locations</Nav.Link>
