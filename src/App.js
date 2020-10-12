@@ -11,6 +11,7 @@ import Locations from './components/Locations/Locations';
 import AddLocations from './components/Locations/AddLocations';
 import EditLocations from './components/Locations/EditLocations';
 import CopyLocations from './components/Locations/CopyLocations';
+import Login from './components/Login/Login';
 
 //Boostrap Imports - Design work
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -20,7 +21,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'locations',
+      view: '',
       edit_name: '',
       edit_coordinates: '',
       edit_description: '',
@@ -92,7 +93,7 @@ class App extends Component {
         return <EditTypes view={this.updateView.bind(this)} title={this.state.edit_name} />
       //Default means that if there is an error or not a 'case' then it defaults to the tours page
       default:
-        return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+        return <Login />
     }
   }
 
