@@ -59,7 +59,7 @@ class App extends Component {
         return <Tours view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
       case 'edit-tour':
-        return <EditTours view={this.updateView.bind(this)} title={this.state.name} />
+        return <EditTours view={this.updateView.bind(this)} title={this.state.edit_name} />
 
       case 'types':
         //The bind sets the 'view' to the variable that is set in <Types/>
@@ -81,7 +81,7 @@ class App extends Component {
         return <AddTypes />
 
       case 'edit-type':
-        return <EditTypes view={this.updateView.bind(this)} title={this.state.name} />
+        return <EditTypes view={this.updateView.bind(this)} title={this.state.edit_name} />
       //Default means that if there is an error or not a 'case' then it defaults to the tours page
       default:
         return <Locations view={this.updateView.bind(this)} edit={this.setName.bind(this)} />

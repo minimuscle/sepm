@@ -33,7 +33,7 @@ export default class Tours extends Component {
         }
       });
 
-      console.log("Title: " + this.props.title)
+    console.log("Title: " + this.props.title)
   }
 
   handleChange = (event) => {
@@ -47,28 +47,28 @@ export default class Tours extends Component {
     console.log("DONE, Name: " + name)
 
     fetch('http://localhost:9000/api/delete/types', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.props.title,
-        })
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.props.title,
       })
+    })
 
-      fetch('http://localhost:9000/api/add/types', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-        })
+    fetch('http://localhost:9000/api/add/types', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
       })
+    })
 
-    
+
   }
 
   renderTours() {
@@ -77,15 +77,15 @@ export default class Tours extends Component {
     } else {
       return (
         this.state.tours.map((val, key) => {
-            return (
-                <Form.Check
-                  type="checkbox"
-                  value={val.name}
-                  onChange={this.handleCheckChange}
-                  id={key}
-                  label={val.name}
-                />
-              )
+          return (
+            <Form.Check
+              type="checkbox"
+              value={val.name}
+              onChange={this.handleCheckChange}
+              id={key}
+              label={val.name}
+            />
+          )
         }))
     }
   }
@@ -97,7 +97,7 @@ export default class Tours extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="">
             <Form.Label>Tour Type Name:</Form.Label>
-            <Form.Control required onChange={this.handleChange} type="text" placeholder={this.props.title} />
+            <Form.Control required onChange={this.handleChange} type="text" defaultValue={this.props.title} />
           </Form.Group>
           <Button type="submit">
             Save

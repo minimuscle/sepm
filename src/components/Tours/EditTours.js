@@ -11,9 +11,10 @@ export default class Tours extends Component {
     super(props);
     this.state = {
       locations: '',
-      name: '',
-      types: [],
-      checked: false
+      types: '',
+      name: this.props.title,
+      checked: false,
+      radio: ''
     }
   }
 
@@ -25,10 +26,22 @@ export default class Tours extends Component {
           this.setState({ locations: [...this.state.locations, ...res.data] })
         }
       });
+
+    fetch('http://localhost:9000/api/get/types')
+      .then(res => res.json())
+      .then(res => {
+        if (res && res.data) {
+          this.setState({ types: [...this.state.types, ...res.data] })
+        }
+      });
   }
 
   handleChange = (event) => {
     this.setState({ name: event.target.value })
+  }
+
+  handleRadioChange = (event) => {
+    this.setState({ radio: event.target.value })
   }
 
   handleCheckChange = (event) => {
@@ -56,9 +69,19 @@ export default class Tours extends Component {
     }
   }
 
-
   handleSubmit = () => {
-    const { name } = this.state
+    const { name, radio } = this.state
+
+    fetch('http://localhost:9000/api/delete/tour', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.props.title
+      })
+    })
 
     fetch('http://localhost:9000/api/add/tour', {
       method: 'POST',
@@ -68,7 +91,7 @@ export default class Tours extends Component {
       },
       body: JSON.stringify({
         name: name,
-        type: "General Kids",
+        type: radio,
         locations: locationList,
         time: totalTime
       })
@@ -76,6 +99,7 @@ export default class Tours extends Component {
 
     console.log("DONE, Name: " + name, locationList)
   }
+
 
   renderLocations() {
     if (this.state.locations.length <= 0) {
@@ -87,7 +111,28 @@ export default class Tours extends Component {
             <Form.Check
               type="checkbox"
               value={val.name}
+              bsCustomPrefix={val.time}
               onChange={this.handleCheckChange}
+              id={val.time}
+              label={val.name}
+            />
+          )
+        }))
+    }
+  }
+
+  renderTourTypes() {
+    if (this.state.types.length <= 0) {
+      return <tr><td colSpan="4">Loading...</td></tr>
+    } else {
+      return (
+        this.state.types.map((val, key) => {
+          return (
+            <Form.Check
+              type="radio"
+              value={val.name}
+              checked={this.state.radio === val.name}
+              onChange={this.handleRadioChange}
               id={key}
               label={val.name}
             />
@@ -99,22 +144,30 @@ export default class Tours extends Component {
   render() {
     return (
       <Container>
-        <Row><h1>Edit Tours</h1></Row>
+        <Row><h1>Edit Tour</h1></Row>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="">
             <Form.Label>Tour Type Name:</Form.Label>
-            <Form.Control required onChange={this.handleChange} type="text" value={this.props.title} disabled />
+            <Form.Control required onChange={this.handleChange} type="text" defaultValue={this.props.title} disabled/>
           </Form.Group>
           <Form.Group controlId="">
-            <Form.Label>Locationss:</Form.Label>
+            <Form.Label>Locations:</Form.Label>
             {['checkbox'].map((type) => (
               <div key={`default-${type}`} className="mb-3">
                 {this.renderLocations()}
               </div>
             ))}
           </Form.Group>
+          <Form.Group>
+            <Form.Label>Tour Type:</Form.Label>
+            {['radio'].map((type) => (
+              <div key={`default-${type}`} className="mb-3">
+                {this.renderTourTypes()}
+              </div>
+            ))}
+          </Form.Group>
           <Button type="submit">
-            Add Tour Type
+            Save Tour
             </Button>
         </Form>
       </Container>

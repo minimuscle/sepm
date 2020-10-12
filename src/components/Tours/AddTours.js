@@ -156,7 +156,7 @@ export default class Tours extends Component {
             ))}
           </Form.Group>
           <Button type="submit">
-            Add Tour Type
+            Add Tour
             </Button>
         </Form>
       </Container>
