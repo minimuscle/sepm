@@ -7,3 +7,8 @@
     float: right;
     margin-top: -50px;
 }
+
+.login {
+    margin: 100px auto auto auto;
+    text-align: center;
+}

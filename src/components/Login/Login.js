@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 //Boostrap Imports - Design work
-import { Container, Table, Button, Modal } from 'react-bootstrap';
+import { Container, Button, Form } from 'react-bootstrap';
 
 class App extends Component {
   constructor(props) {
@@ -57,8 +55,12 @@ class App extends Component {
 
   render() {
     return (
-      <Container>
+      <Container className="login">
           <h1>Welcome! Login Below</h1>
+          <Form>
+
+          </Form>
+          
       </Container>
     )
   }
