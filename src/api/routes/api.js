@@ -6,6 +6,7 @@ const router = express.Router();
 const tours = require('../json/tours.json');
 const types = require('../json/types.json');
 const locations = require('../json/locations.json');
+const users = require('../json/users.json');
 
 function checkDuplicate(data, input) {
     var matches = 0

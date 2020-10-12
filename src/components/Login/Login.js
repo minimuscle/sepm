@@ -2,68 +2,63 @@ import React, { Component } from 'react';
 import '../../App.css';
 
 //Boostrap Imports - Design work
-import { Container, Button, Form } from 'react-bootstrap';
+import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      locations: '',
-      name: '',
-      show: false
-    }
-  }
-
-  //This "fetches" the API which is set up to get the tours json data
-  componentDidMount() {
-    fetch('http://localhost:9000/api/get/locations')
-      .then(res => res.json())
-      .then(res => {
-        if (res && res.data) {
-          this.setState({ locations: [...this.state.locations, ...res.data] })
+    constructor(props) {
+        super(props);
+        this.state = {
+            users: ''
         }
-      });
-  }
+    }
 
-  changeView(view) {
-    this.props.view(view);
-  }
+    //This "fetches" the API which is set up to get the tours json data
+    componentDidMount() {
+        fetch('http://localhost:9000/api/get/users')
+            .then(res => res.json())
+            .then(res => {
+                if (res && res.data) {
+                    this.setState({ users: [...this.state.users, ...res.data] })
+                }
+            });
+    }
 
-  handleClose = () => {
-    this.setState({ show: false })
-  }
-  
-  handleShow = () => {
-    this.setState({ show: true })
-  }
-
-  handleCloseDelete = () => {
-    this.setState({ show: false })
-    fetch('http://localhost:9000/api/delete/location', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.state.name,
-        })
-      })
-    window.location.reload();
-  }
+    changeView(view) {
+        this.props.view(view);
+    }
 
 
-  render() {
-    return (
-      <Container className="login">
-          <h1>Welcome! Login Below</h1>
-          <Form>
+    render() {
+        return (
+            <Container className="login">
+                <h1>Welcome! Login Below</h1><br />
+                <Row className="justify-content-md-center">
+                    <Col md={4}>
+                    </Col>
+                    <Col md={3}>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control type="text" />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" />
+                            </Form.Group>
+                            <Form.Group>
+                                <Button type="submit">Login</Button>
+                            </Form.Group>
 
-          </Form>
-          
-      </Container>
-    )
-  }
+                        </Form>
+                    </Col>
+                    <Col md={4}>
+                    </Col>
+                </Row>
+
+
+            </Container>
+        )
+    }
 }
 
 export default App;
