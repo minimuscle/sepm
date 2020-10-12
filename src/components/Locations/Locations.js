@@ -41,7 +41,7 @@ class App extends Component {
               <td>{val.description}</td>
               <td>{val.time}</td>
               <td><Button variant="light" onClick={() => this.editLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-              <td><Button variant="light" onClick={() => this.copyLocation(val.name)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
+              <td><Button variant="light" onClick={() => this.copyLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
               <td><Button variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
             </tr>
           )
@@ -60,8 +60,10 @@ class App extends Component {
     this.props.view('edit-location');
   }
 
-  copyLocation(name) {
-    this.props.edit(name);
+  copyLocation(name, coordinates, description) {
+    this.props.edit_name(name);
+    this.props.edit_coordinates(coordinates);
+    this.props.edit_description(description);
     this.props.view('copy-location');
   }
 

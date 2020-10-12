@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Tours from './components/Tours/Tours';
 import AddTours from './components/Tours/AddTours';
+import CopyTours from './components/Tours/CopyTours';
 import EditTours from './components/Tours/EditTours';
 import Types from './components/TourTypes/Types';
 import AddTypes from './components/TourTypes/AddTypes';
@@ -9,6 +10,7 @@ import EditTypes from './components/TourTypes/EditTypes';
 import Locations from './components/Locations/Locations';
 import AddLocations from './components/Locations/AddLocations';
 import EditLocations from './components/Locations/EditLocations';
+import CopyLocations from './components/Locations/CopyLocations';
 
 //Boostrap Imports - Design work
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -68,14 +70,20 @@ class App extends Component {
       case 'add-tour':
         return <AddTours />
 
+      case 'copy-tour':
+        return <CopyTours name={this.state.edit_name}/>
+
       case 'add-location':
         return <AddLocations />
 
       case 'edit-location':
         return <EditLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
+      case 'copy-location':
+        return <CopyLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+
       case 'locations':
-        return <Locations view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)}/>
+        return <Locations view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
 
       case 'add-type':
         return <AddTypes />
