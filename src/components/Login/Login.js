@@ -8,7 +8,9 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: ''
+            users: '',
+            username: '',
+            password: '',
         }
     }
 
@@ -23,9 +25,39 @@ class App extends Component {
             });
     }
 
+    handleNameChange = (event) => {
+        this.setState({ username: event.target.value })
+    }
+
+    handlePassChange = (event) => {
+        this.setState({ password: event.target.value })
+    }
+
     changeView(view) {
         this.props.view(view);
     }
+
+    handleSubmit = () => {
+        const {username, password } = this.state;
+        fetch('http://localhost:9000/api/login', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: username,
+              password: password
+            })
+          })
+          .then(res => {
+            if (res.status == "202") {
+                this.props.user(username);
+                this.changeView('locations');
+            }
+          })
+    }
+
 
 
     render() {
@@ -39,14 +71,14 @@ class App extends Component {
                         <Form>
                             <Form.Group>
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" />
+                                <Form.Control type="text" name="username" value={this.state.username} onChange={this.handleNameChange} />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" />
+                                <Form.Control type="password" name="password" value={this.state.password} onChange={this.handlePassChange} />
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit">Login</Button>
+                                <Button onClick={this.handleSubmit}>Login</Button>
                             </Form.Group>
 
                         </Form>

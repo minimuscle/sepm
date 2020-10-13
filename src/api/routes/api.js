@@ -49,6 +49,44 @@ function validateTour(input) {
     }
 }
 
+function validateLogin(input) {
+    if(input.hasOwnProperty('username') && input.hasOwnProperty('password')) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function validateLogout(input) {
+    if(input.hasOwnProperty('username')) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function loginUser(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+
+    if(data[index].username == input.username && data[index].password == input.password) {
+        data[index].login = true
+        return true
+    } else {
+        return false
+    }
+}
+
+function logoutUser(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+
+    if(data[index].username == input.username && data[index].login) {
+        data[index].login = false
+        return true
+    } else {
+        return false
+    }
+}
+
 function updateTypes(data, input) {
     var index = data.findIndex(obj => obj.name == input.name);
     data[index].name = input.name
@@ -312,7 +350,7 @@ router.post('/login', function(req, res, next) {
         checkLogin = loginUser(users, req.body)
         if(checkLogin) {
             writeJson(users, "json/users.json")
-            console.logStatus(202)
+            res.sendStatus(202)
         } else {
             console.log("ERROR: Username or password is incorrect.")
         }

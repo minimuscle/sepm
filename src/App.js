@@ -26,6 +26,7 @@ class App extends Component {
       edit_coordinates: '',
       edit_description: '',
       edit_types: '',
+      user: '',
     }
   }
 
@@ -35,10 +36,14 @@ class App extends Component {
     })
   }
 
+  userType(user) {
+    this.setState({
+      user: user
+    })
+  }
+
 
   //Set Edit "X" to be that when the prop is set by a component
-
-
   setName(name) {
     this.setState({
       edit_name: name
@@ -59,43 +64,62 @@ class App extends Component {
   renderComponents() {
     switch (this.state.view) {
       case 'tours':
-        return <Tours view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+        return <Tours user={this.state.user} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
       case 'edit-tour':
-        return <EditTours view={this.updateView.bind(this)} title={this.state.edit_name} />
+        return <EditTours user={this.state.user} view={this.updateView.bind(this)} title={this.state.edit_name} />
 
       case 'types':
         //The bind sets the 'view' to the variable that is set in <Types/>
-        return <Types view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+        return <Types user={this.state.user} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
       case 'add-tour':
-        return <AddTours />
+        return <AddTours user={this.state.user} />
 
       case 'copy-tour':
-        return <CopyTours name={this.state.edit_name}/>
+        return <CopyTours user={this.state.user} name={this.state.edit_name}/>
 
       case 'add-location':
-        return <AddLocations />
+        return <AddLocations user={this.state.user} />
 
       case 'edit-location':
-        return <EditLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+        return <EditLocations user={this.state.user} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
       case 'copy-location':
-        return <CopyLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+        return <CopyLocations user={this.state.user} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
       case 'locations':
-        return <Locations view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
+        return <Locations user={this.state.user} view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
 
       case 'add-type':
-        return <AddTypes />
+        return <AddTypes user={this.state.user} />
 
       case 'edit-type':
-        return <EditTypes view={this.updateView.bind(this)} title={this.state.edit_name} />
+        return <EditTypes user={this.state.user} view={this.updateView.bind(this)} title={this.state.edit_name} />
       //Default means that if there is an error or not a 'case' then it defaults to the tours page
       default:
-        return <Login />
+        return <Login view={this.updateView.bind(this)} user={this.userType.bind(this)}/>
     }
   }
+
+  loginInfo(){
+    if (this.state.user == "") {
+      return <Navbar.Text><a className="ButtonLogin" onClick={this.login}>Login</a></Navbar.Text>
+    } else {
+      return <Navbar.Text>Signed in as <a className="ButtonLogin" onClick={this.logout}>{this.state.user}</a></Navbar.Text>
+    }
+  }
+
+  login = () => {
+    this.updateView('login')
+  }
+
+  logout = () => {
+    this.userType("");
+    this.updateView('login');
+  }
+
+
 
   render() {
     return (
@@ -110,9 +134,7 @@ class App extends Component {
               <Nav.Link onClick={() => this.updateView('types')}>Tour Types</Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <Navbar.Text>
-            Signed in as <a href="#login">John Doe</a>
-          </Navbar.Text>
+          {this.loginInfo()}
         </Navbar>
         {this.renderComponents()}
       </Container>
