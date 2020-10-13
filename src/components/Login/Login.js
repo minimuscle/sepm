@@ -52,7 +52,7 @@ class App extends Component {
           })
           .then(res => {
             if (res.status == "202") {
-                this.props.user(username);
+                this.props.userType(username);
                 this.changeView('locations');
             }
           })

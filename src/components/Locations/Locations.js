@@ -27,25 +27,86 @@ class App extends Component {
       });
   }
 
+  showExtraHeaders() {
+    if (this.props.userType == "admin") {
+      return (
+        <div>
+          <div className="title"><h1>Locations</h1>
+            <Button className="addBtn" onClick={() => this.changeView('add-location')}>Add New Location</Button>
+          </div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Coordinates</th>
+                <th>Description</th>
+                <th>Time</th>
+                <th>Edit</th>
+                <th>Copy</th>
+                <th>Delete</th>
+              </tr>
+              {this.renderLocations()}
+            </thead>
+          </Table>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className="title"><h1>Locations</h1></div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Coordinates</th>
+                <th>Description</th>
+                <th>Time</th>
+              </tr>
+              {this.renderLocations()}
+            </thead>
+          </Table>
+        </div>
+      )
+    }
+
+  }
+
   renderLocations() {
     if (this.state.locations.length <= 0) {
       return <tr><td colSpan="4">Loading...</td></tr>
     } else {
-      return (
-        this.state.locations.map((val, key) => {
-          return (
-            <tr key={key}>
-              <td>{key}</td>
-              <td>{val.name}</td>
-              <td>{val.coordinates}</td>
-              <td>{val.description}</td>
-              <td>{val.time}</td>
-              <td><Button variant="light" onClick={() => this.editLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-              <td><Button variant="light" onClick={() => this.copyLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
-              <td><Button variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
-            </tr>
-          )
-        }))
+      if (this.props.userType == "admin") {
+        return (
+          this.state.locations.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{val.name}</td>
+                <td>{val.coordinates}</td>
+                <td>{val.description}</td>
+                <td>{val.time}</td>
+                <td><Button variant="light" onClick={() => this.editLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+                <td><Button variant="light" onClick={() => this.copyLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
+                <td><Button variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+              </tr>
+            )
+          }))
+      } else {
+        return (
+          this.state.locations.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{val.name}</td>
+                <td>{val.coordinates}</td>
+                <td>{val.description}</td>
+                <td>{val.time}</td>
+              </tr>
+            )
+          }))
+      }
     }
   }
 
@@ -75,7 +136,7 @@ class App extends Component {
   handleClose = () => {
     this.setState({ show: false })
   }
-  
+
   handleShow = () => {
     this.setState({ show: true })
   }
@@ -83,15 +144,15 @@ class App extends Component {
   handleCloseDelete = () => {
     this.setState({ show: false })
     fetch('http://localhost:9000/api/delete/location', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.state.name,
-        })
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
       })
+    })
     window.location.reload();
   }
 
@@ -113,26 +174,7 @@ class App extends Component {
           </Button>
           </Modal.Footer>
         </Modal>
-        <div className="title"><h1>Locations</h1>
-        <Button className="addBtn" onClick={() => this.changeView('add-location')}>Add New Location</Button>
-        </div>
-        
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Coordinates</th>
-                <th>Description</th>
-                <th>Time</th>
-                <th>Edit</th>
-                <th>Copy</th>
-                <th>Delete</th>
-              </tr>
-              {/** TODO: Insert Tour Data here */}
-              {this.renderLocations()}
-            </thead>
-          </Table>
+        {this.showExtraHeaders()}
       </Container>
     )
   }

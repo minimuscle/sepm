@@ -27,6 +27,7 @@ class App extends Component {
       edit_description: '',
       edit_types: '',
       user: '',
+      userType: 'assistant',
     }
   }
 
@@ -39,6 +40,12 @@ class App extends Component {
   userType(user) {
     this.setState({
       user: user
+    })
+  }
+
+  setUserType(user) {
+    this.setState({
+      userType: user
     })
   }
 
@@ -62,51 +69,55 @@ class App extends Component {
 
 
   renderComponents() {
-    switch (this.state.view) {
-      case 'tours':
-        return <Tours user={this.state.user} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+    if (!this.state.user == "") {
+      switch (this.state.view) {
+        case 'tours':
+          return <Tours userType={this.state.userType} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
-      case 'edit-tour':
-        return <EditTours user={this.state.user} view={this.updateView.bind(this)} title={this.state.edit_name} />
+        case 'edit-tour':
+          return <EditTours userType={this.state.userType} view={this.updateView.bind(this)} title={this.state.edit_name} />
 
-      case 'types':
-        //The bind sets the 'view' to the variable that is set in <Types/>
-        return <Types user={this.state.user} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+        case 'types':
+          //The bind sets the 'view' to the variable that is set in <Types/>
+          return <Types userType={this.state.userType} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
-      case 'add-tour':
-        return <AddTours user={this.state.user} />
+        case 'add-tour':
+          return <AddTours userType={this.state.userType} />
 
-      case 'copy-tour':
-        return <CopyTours user={this.state.user} name={this.state.edit_name}/>
+        case 'copy-tour':
+          return <CopyTours userType={this.state.userType} name={this.state.edit_name} />
 
-      case 'add-location':
-        return <AddLocations user={this.state.user} />
+        case 'add-location':
+          return <AddLocations userType={this.state.userType} />
 
-      case 'edit-location':
-        return <EditLocations user={this.state.user} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+        case 'edit-location':
+          return <EditLocations userType={this.state.userType} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
-      case 'copy-location':
-        return <CopyLocations user={this.state.user} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+        case 'copy-location':
+          return <CopyLocations userType={this.state.userType} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
-      case 'locations':
-        return <Locations user={this.state.user} view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
+        case 'locations':
+          return <Locations userType={this.state.userType} view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
 
-      case 'add-type':
-        return <AddTypes user={this.state.user} />
+        case 'add-type':
+          return <AddTypes userType={this.state.userType} />
 
-      case 'edit-type':
-        return <EditTypes user={this.state.user} view={this.updateView.bind(this)} title={this.state.edit_name} />
-      //Default means that if there is an error or not a 'case' then it defaults to the tours page
-      default:
-        return <Login view={this.updateView.bind(this)} user={this.userType.bind(this)}/>
+        case 'edit-type':
+          return <EditTypes userType={this.state.userType} view={this.updateView.bind(this)} title={this.state.edit_name} />
+        //Default means that if there is an error or not a 'case' then it defaults to the tours page
+        default:
+          return <Login view={this.updateView.bind(this)} userType={this.userType.bind(this)} />
+      }
+    } else {
+      return <Login view={this.updateView.bind(this)} userType={this.userType.bind(this)} />
     }
   }
 
-  loginInfo(){
+  loginInfo() {
     if (this.state.user == "") {
       return <Navbar.Text><a className="ButtonLogin" onClick={this.login}>Login</a></Navbar.Text>
     } else {
-      return <Navbar.Text>Signed in as <a className="ButtonLogin" onClick={this.logout}>{this.state.user}</a></Navbar.Text>
+      return <Navbar.Text>Signed in as <a className="ButtonLogin" onClick={this.settings}>{this.state.user}.</a>   |  <a className="ButtonLogout" onClick={this.logout}>Logout</a></Navbar.Text>
     }
   }
 
@@ -119,6 +130,10 @@ class App extends Component {
     this.updateView('login');
   }
 
+  settings = () => {
+    this.setUserType("admin");
+    this.updateView('locations');
+  }
 
 
   render() {
