@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   //This "fetches" the API which is set up to get the tours json data
-  componentDidMount() {
+ async componentDidMount() {
     fetch('http://localhost:9000/api/get/locations')
       .then(res => res.json())
       .then(res => {
@@ -32,7 +32,7 @@ class App extends Component {
       return (
         <div>
           <div className="title"><h1>Locations</h1>
-            <Button className="addBtn" onClick={() => this.changeView('add-location')}>Add New Location</Button>
+            <Button  className="addlocationbutton" onClick={() => this.changeView('add-location')}>Add New Location</Button>
           </div>
           <Table striped bordered hover>
             <thead>
@@ -83,13 +83,13 @@ class App extends Component {
             return (
               <tr key={key}>
                 <td>{key}</td>
-                <td>{val.name}</td>
+                <td className ="locationName">{val.name}</td>
                 <td>{val.coordinates}</td>
-                <td>{val.description}</td>
+                <td className ="locationDes">{val.description}</td>
                 <td>{val.time}</td>
                 <td><Button variant="light" onClick={() => this.editLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
                 <td><Button variant="light" onClick={() => this.copyLocation(val.name, val.coordinates, val.description)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
-                <td><Button variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+                <td><Button className = "locationDelete" variant="danger" onClick={() => this.deleteLocation(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
               </tr>
             )
           }))

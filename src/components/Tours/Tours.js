@@ -45,7 +45,7 @@ class Tours extends Component {
 
 
   //This "fetches" the API which is set up to get the tours json data
-  componentDidMount() {
+ async componentDidMount() {
     fetch('http://localhost:9000/api/get/tours')
       .then(res => res.json())
       .then(res => {
@@ -109,13 +109,13 @@ class Tours extends Component {
             return (
               <tr key={key}>
                 <td>{key}</td>
-                <td>{val.name}</td>
-                <td>{val.locations.join(', ')}</td>
+                <td className = "tourName">{val.name}</td>
+                <td className = "tourLoaction">{val.locations.join(', ')}</td>
                 <td>{val.type}</td>
                 <td>{val.time}</td>
-                <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+                <td><Button className ="editButton" variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
                 <td><Button variant="light" onClick={() => this.copyTour(val.name)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
-                <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+                <td><Button className ="deleteButton" variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
               </tr>
             )
           }))

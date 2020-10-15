@@ -83,7 +83,7 @@ export default class App extends Component {
             <Form.Label>Description:</Form.Label>
             <Form.Control required onChange={this.handleDescriptionChange} as="textarea" rows="5" defaultValue={this.state.description} />
           </Form.Group>
-          <Button type="submit">
+          <Button className= "saveLocation"type="submit">
             Save Location
             </Button>
         </Form>

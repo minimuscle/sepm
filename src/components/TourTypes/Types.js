@@ -14,7 +14,7 @@ class Tours extends Component {
     }
   }
 
-  componentDidMount() {
+ async componentDidMount() {
     fetch('http://localhost:9000/api/get/types')
       .then(res => res.json())
       .then(res => {
@@ -34,9 +34,9 @@ class Tours extends Component {
             return (
               <tr key={key}>
                 <td>{key}</td>
-                <td>{val.name}</td>
+                <td className = "tourTypes">{val.name}</td>
                 <td><Button variant="light" onClick={() => this.editType(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-                <td><Button variant="danger" onClick={() => this.deleteType(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+                <td><Button className ="typeButton" variant="danger" onClick={() => this.deleteType(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
               </tr>
             )
           }))

@@ -18,7 +18,7 @@ export default class Tours extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     fetch('http://localhost:9000/api/get/locations')
       .then(res => res.json())
       .then(res => {
@@ -108,6 +108,7 @@ export default class Tours extends Component {
       return (
         this.state.locations.map((val, key) => {
           return (
+            <div className="locationform">
             <Form.Check
               type="checkbox"
               value={val.name}
@@ -116,6 +117,7 @@ export default class Tours extends Component {
               id={val.time}
               label={val.name}
             />
+            </div>
           )
         }))
     }
@@ -128,6 +130,7 @@ export default class Tours extends Component {
       return (
         this.state.types.map((val, key) => {
           return (
+            
             <Form.Check
               type="radio"
               value={val.name}

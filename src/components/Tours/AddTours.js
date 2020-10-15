@@ -18,7 +18,7 @@ export default class Tours extends Component {
     }
   }
 
-  componentDidMount() {
+ async componentDidMount() {
     fetch('http://localhost:9000/api/get/locations')
       .then(res => res.json())
       .then(res => {
@@ -97,7 +97,9 @@ export default class Tours extends Component {
       return (
         this.state.locations.map((val, key) => {
           return (
+            <div className="addform">
             <Form.Check
+          
               type="checkbox"
               value={val.name}
               bsCustomPrefix={val.time}
@@ -105,6 +107,7 @@ export default class Tours extends Component {
               id={val.time}
               label={val.name}
             />
+            </div>
           )
         }))
     }
@@ -137,7 +140,9 @@ export default class Tours extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="">
             <Form.Label>Tour Type Name:</Form.Label>
+            <div className = "addinput">
             <Form.Control required onChange={this.handleChange} type="text" placeholder="Farmdale Primary School" />
+            </div>
           </Form.Group>
           <Form.Group controlId="">
             <Form.Label>Locations:</Form.Label>
@@ -155,7 +160,7 @@ export default class Tours extends Component {
               </div>
             ))}
           </Form.Group>
-          <Button type="submit">
+          <Button className ="addtourtypebutton" type="submit">
             Add Tour
             </Button>
         </Form>
