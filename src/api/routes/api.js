@@ -6,26 +6,27 @@ const router = express.Router();
 const tours = require('../json/tours.json');
 const types = require('../json/types.json');
 const locations = require('../json/locations.json');
+const users = require('../json/users.json');
 
 function checkDuplicate(data, input) {
     var matches = 0
-    Object.keys(data).forEach(function(key) {
-      if(input == data[key].name || input == data[key].username){
-        matches++ 
-      }
+    Object.keys(data).forEach(function (key) {
+        if (input == data[key].name || input == data[key].username) {
+            matches++
+        }
     })
     return matches
 }
 
 function writeJson(data, file) {
     var json = JSON.stringify(data)
-    fs.writeFile(file, json, 'utf8', function(err) {
+    fs.writeFile(file, json, 'utf8', function (err) {
         if (err) throw err
     });
 }
 
 function validateTypes(input) {
-    if(input.hasOwnProperty('name')){
+    if (input.hasOwnProperty('name')) {
         return true
     } else {
         return false
@@ -33,7 +34,7 @@ function validateTypes(input) {
 }
 
 function validateLocation(input) {
-    if(input.hasOwnProperty('name') && input.hasOwnProperty('coordinates') && input.hasOwnProperty('description') && input.hasOwnProperty('time')){
+    if (input.hasOwnProperty('name') && input.hasOwnProperty('coordinates') && input.hasOwnProperty('description') && input.hasOwnProperty('time')) {
         return true
     } else {
         return false
@@ -41,7 +42,76 @@ function validateLocation(input) {
 }
 
 function validateTour(input) {
-    if(input.hasOwnProperty('name') && input.hasOwnProperty('type') && input.hasOwnProperty('locations') && input.hasOwnProperty('time')){
+    if (input.hasOwnProperty('name') && input.hasOwnProperty('type') && input.hasOwnProperty('locations') && input.hasOwnProperty('time')) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function validateLogin(input) {
+    if (input.hasOwnProperty('username') && input.hasOwnProperty('password')) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function validateUser(input) {
+    if (input.hasOwnProperty('username') && input.hasOwnProperty('password') && input.hasOwnProperty('type') && input.hasOwnProperty('active')) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function validateLogout(input) {
+    if (input.hasOwnProperty('username')) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function isAdmin(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+
+    if (data[index].type == "admin") {
+        return true
+    } else {
+        return false
+    }
+}
+
+function isActive(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+
+    if (data[index].active) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function loginUser(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+
+    //Checks if the user is active or not, if not, do not allow. if yes, then allow. 
+
+
+    if (data[index].username == input.username && data[index].password == input.password) {
+        data[index].login = true
+        return true
+    } else {
+        return false
+    }
+}
+
+function logoutUser(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+
+    if (data[index].username == input.username && data[index].login) {
+        data[index].login = false
         return true
     } else {
         return false
@@ -54,7 +124,7 @@ function updateTypes(data, input) {
 }
 
 function deleteData(data, input) {
-	var index = data.findIndex(obj => obj.name == input.name);
+    var index = data.findIndex(obj => obj.name == input.name);
     let spliced = data.splice(index, 1);
     console.log(spliced)
 }
@@ -73,9 +143,16 @@ function updateTour(data, input) {
     data[index].time = input.time
 }
 
+function toggleUser(data, input) {
+    var index = data.findIndex(obj => obj.username == input.username);
+    data[index].password = data[index].password
+    data[index].type = data[index].type
+    data[index].active = input.active
+    data[index].login = data[index].login
+}
 //Test Command
 router.get('/', (req, res) => {
-	console.log("GET recieved")
+    console.log("GET recieved")
 });
 
 
@@ -92,13 +169,13 @@ router.use('/get/types', (req, res) => {
     })
 });
 
-router.get('/get/locations', function(req, res, next) {
+router.get('/get/locations', function (req, res, next) {
     res.json({
         data: locations
     })
 });
 
-router.get('/get/users', function(req, res, next) {
+router.get('/get/users', function (req, res, next) {
     res.json({
         data: users
     })
@@ -106,17 +183,17 @@ router.get('/get/users', function(req, res, next) {
 
 
 //Post Data
-router.post('/add/types', function(req, res, next) {
+router.post('/add/types', function (req, res, next) {
     isDuplicate = checkDuplicate(types, req.body.name)
     isValidType = validateTypes(req.body)
-    
-    if(!isDuplicate && isValidType) {
+
+    if (!isDuplicate && isValidType) {
         types.push(req.body)
         writeJson(types, "json/types.json")
         console.log("SUCCESS: Tour Type added.")
     } else if (!isValidType) {
         console.log("ERROR: Invalid Tour Type.")
-    } else if (isDuplicate){
+    } else if (isDuplicate) {
         console.log("ERROR: Duplicate Tour Types.")
         console.log("DUPLICATE TOUR TYPE")
     } else {
@@ -124,221 +201,248 @@ router.post('/add/types', function(req, res, next) {
     }
 });
 
-router.post('/add/tour', function(req, res, next) {
+router.post('/add/tour', function (req, res, next) {
     isDuplicate = checkDuplicate(tours, req.body.name)
     isValidTour = validateTour(req.body)
-    
-    if(!isDuplicate && isValidTour) {
+
+    if (!isDuplicate && isValidTour) {
         tours.push(req.body)
         writeJson(tours, "json/tours.json")
         console.log("SUCCESS: Tour added.")
     } else if (!isValidTour) {
         console.log("ERROR: Invalid tour.")
-    } else if (isDuplicate){
+    } else if (isDuplicate) {
         console.log("ERROR: Duplicate tours.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/edit/types', function(req, res, next) {
+router.post('/edit/types', function (req, res, next) {
     isDuplicate = checkDuplicate(types, req.body.name)
     isValidType = validateTypes(req.body)
 
-    if(isDuplicate && isValidType) {
+    if (isDuplicate && isValidType) {
         updateTypes(types, req.body)
         writeJson(types, "json/types.json")
         console.log("SUCCESS: Tour updated.")
-    } else if(!isDuplicate) {
+    } else if (!isDuplicate) {
         console.log("ERROR: Tour does not exist.")
-    } else if(!isValidType) {
+    } else if (!isValidType) {
         console.log("ERROR: Invalid tour.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/add/user', function(req, res, next) {
+router.post('/add/user', function (req, res, next) {
     isDuplicate = checkDuplicate(users, req.body.username)
     isValidUser = validateUser(req.body)
-    
-    if(!isDuplicate && isValidUser) {
+
+    if (!isDuplicate && isValidUser) {
         users.push(req.body)
         writeJson(users, "json/users.json")
         console.log("SUCCESS: User added.")
     } else if (!isValidUser) {
         console.log("ERROR: Invalid user.")
-    } else if (isDuplicate){
+    } else if (isDuplicate) {
         console.log("ERROR: Duplicate users.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/add/location', function(req, res, next) {
+router.post('/add/location', function (req, res, next) {
     isDuplicate = checkDuplicate(locations, req.body.name)
     isValidLocation = validateLocation(req.body)
-    
-    if(!isDuplicate && isValidLocation) {
+
+    if (!isDuplicate && isValidLocation) {
         locations.push(req.body)
         writeJson(locations, "json/locations.json")
         console.log("SUCCESS: Location added.")
     } else if (!isValidLocation) {
         console.log("ERROR: Invalid location.")
-    } else if (isDuplicate){
+    } else if (isDuplicate) {
         console.log("ERROR: Duplicate locations.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/edit/location', function(req, res, next) {
+router.post('/edit/location', function (req, res, next) {
     isDuplicate = checkDuplicate(locations, req.body.name)
     isValidLocation = validateLocation(req.body)
 
-    if(isDuplicate && isValidLocation) {
+    if (isDuplicate && isValidLocation) {
         updateLocation(locations, req.body)
         writeJson(locations, "json/locations.json")
         console.log("SUCCESS: Location updated.")
-    } else if(!isDuplicate) {
+    } else if (!isDuplicate) {
         console.log("ERROR: Location does not exist.")
-    } else if(!isValidLocation) {
+    } else if (!isValidLocation) {
         console.log("ERROR: Invalid location.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/edit/tour', function(req, res, next) {
+router.post('/edit/tour', function (req, res, next) {
     isDuplicate = checkDuplicate(tours, req.body.name)
     isValidTour = validateTour(req.body)
 
-    if(isDuplicate && isValidTour) {
+    if (isDuplicate && isValidTour) {
         updateTour(tours, req.body)
         writeJson(tours, "json/tours.json")
         console.log("SUCCESS: Tour updated.")
-    } else if(!isDuplicate) {
+    } else if (!isDuplicate) {
         console.log("ERROR: Tour does not exist.")
-    } else if(!isValidTour) {
+    } else if (!isValidTour) {
         console.log("ERROR: Invalid tour.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/edit/user', function(req, res, next) {
+router.post('/edit/user', function (req, res, next) {
     isDuplicate = checkDuplicate(users, req.body.username)
     isValidUser = validateUser(req.body)
 
-    if(isDuplicate && isValidUser) {
+    if (isDuplicate && isValidUser) {
         updateUser(users, req.body)
         writeJson(users, "json/users.json")
         console.log("SUCCESS: User updated.")
-    } else if(!isDuplicate) {
+    } else if (!isDuplicate) {
         console.log("ERROR: User does not exist.")
-    } else if(!isValidUser) {
+    } else if (!isValidUser) {
         console.log("ERROR: Invalid user.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/delete/location', function(req, res, next) {
-	isDuplicate = checkDuplicate(locations, req.body.name)
+router.post('/toggle/user', function (req, res, next) {
+    isDuplicate = checkDuplicate(users, req.body.username)
+    //isValidUser = validateUser(req.body)
 
-	if(req.body.hasOwnProperty('name')) {
-		if(isDuplicate) {
-			deleteData(locations, req.body)
-			console.log("SUCCESS: Location deleted.")
-		} else {
-			console.log("ERROR: Location does not exist.")
-		}
-	} else {
-		console.log("ERROR: Invalid location.")
-	}
+    if (isDuplicate) {
+        toggleUser(users, req.body)
+        writeJson(users, "json/users.json")
+        console.log("SUCCESS: User updated.")
+    } else if (!isDuplicate) {
+        console.log("ERROR: User does not exist.")
+    } else {
+        console.log("ERROR: Unknown.")
+    }
 });
 
-router.post('/delete/tour', function(req, res, next) {
-	isDuplicate = checkDuplicate(tours, req.body.name)
+router.post('/delete/location', function (req, res, next) {
+    isDuplicate = checkDuplicate(locations, req.body.name)
 
-	if(req.body.hasOwnProperty('name')) {
-		if(isDuplicate) {
-			deleteData(tours, req.body)
-			console.log("SUCCESS: Tour deleted.")
-		} else {
-			console.log("ERROR: Tour does not exist.")
-		}
-	} else {
-		console.log("ERROR: Invalid tour.")
-	}
+    if (req.body.hasOwnProperty('name')) {
+        if (isDuplicate) {
+            deleteData(locations, req.body)
+            console.log("SUCCESS: Location deleted.")
+        } else {
+            console.log("ERROR: Location does not exist.")
+        }
+    } else {
+        console.log("ERROR: Invalid location.")
+    }
 });
 
-router.post('/delete/types', function(req, res, next) {
-	isDuplicate = checkDuplicate(types, req.body.name)
+router.post('/delete/tour', function (req, res, next) {
+    isDuplicate = checkDuplicate(tours, req.body.name)
 
-	if(req.body.hasOwnProperty('name')) {
-		if(isDuplicate) {
-			deleteData(types, req.body)
-			console.log("SUCCESS: Tour Type " + req.body.name + " deleted.")
-		} else {
-			console.log("ERROR: Tour Type does not exist.")
-		}
-	} else {
-		console.log("ERROR: Invalid Tour Type.")
-	}
+    if (req.body.hasOwnProperty('name')) {
+        if (isDuplicate) {
+            deleteData(tours, req.body)
+            console.log("SUCCESS: Tour deleted.")
+        } else {
+            console.log("ERROR: Tour does not exist.")
+        }
+    } else {
+        console.log("ERROR: Invalid tour.")
+    }
 });
 
-router.post('/delete/user', function(req, res, next) {
-	isDuplicate = checkDuplicate(users, req.body.username)
+router.post('/delete/types', function (req, res, next) {
+    isDuplicate = checkDuplicate(types, req.body.name)
 
-	if(req.body.hasOwnProperty('username')) {
-		if(isDuplicate) {
-			deleteUser(users, req.body)
-			console.log("SUCCESS: User deleted.")
-		} else {
-			console.log("ERROR: User does not exist.")
-		}
-	} else {
-		console.log("ERROR: Invalid user.")
-	}
+    if (req.body.hasOwnProperty('name')) {
+        if (isDuplicate) {
+            deleteData(types, req.body)
+            console.log("SUCCESS: Tour Type " + req.body.name + " deleted.")
+        } else {
+            console.log("ERROR: Tour Type does not exist.")
+        }
+    } else {
+        console.log("ERROR: Invalid Tour Type.")
+    }
 });
 
-router.post('/login', function(req, res, next) {
+router.post('/delete/user', function (req, res, next) {
+    isDuplicate = checkDuplicate(users, req.body.username)
+
+    if (req.body.hasOwnProperty('username')) {
+        if (isDuplicate) {
+            deleteUser(users, req.body)
+            console.log("SUCCESS: User deleted.")
+        } else {
+            console.log("ERROR: User does not exist.")
+        }
+    } else {
+        console.log("ERROR: Invalid user.")
+    }
+});
+
+router.post('/login', function (req, res, next) {
     isDuplicate = checkDuplicate(users, req.body.username)
     isValidLogin = validateLogin(req.body)
 
-    if(isDuplicate && isValidLogin) {
+    if (isDuplicate && isValidLogin) {
         checkLogin = loginUser(users, req.body)
-        if(checkLogin) {
+        checkAdmin = isAdmin(users, req.body)
+        checkActive = isActive(users, req.body)
+        if (checkLogin) {
             writeJson(users, "json/users.json")
-            console.logStatus(202)
+            //Sends 300 status if the user is not active
+            if (!checkActive) {
+                res.sendStatus(300)
+            } else {
+                //This sends the 203 status if the user is an admin, however, will send a 202 status if they are only an assistant
+                if (checkAdmin) {
+                    res.sendStatus(203)
+                } else {
+                    res.sendStatus(202)
+                }
+            }
         } else {
             console.log("ERROR: Username or password is incorrect.")
         }
-    } else if(!isDuplicate) {
+    } else if (!isDuplicate) {
         console.log("ERROR: User not found.")
-    } else if(!isValidLogin) {
+    } else if (!isValidLogin) {
         console.log("ERROR: Invalid login.")
     } else {
         console.log("ERROR: Unknown.")
     }
 });
 
-router.post('/logout', function(req, res, next) {
+router.post('/logout', function (req, res, next) {
     isDuplicate = checkDuplicate(users, req.body.username)
     isValidLogout = validateLogout(req.body)
 
-    if(isDuplicate && isValidLogout) {
+    if (isDuplicate && isValidLogout) {
         checkLogout = logoutUser(users, req.body)
-        if(checkLogout) {
+        if (checkLogout) {
             writeJson(users, "json/users.json")
             console.log("SUCCESS: User logged out.")
         } else {
             console.log("ERROR: User is already logged out.")
         }
-    } else if(!isDuplicate) {
+    } else if (!isDuplicate) {
         console.log("ERROR: User not found.")
-    } else if(!isValidLogin) {
+    } else if (!isValidLogin) {
         console.log("ERROR: Invalid logout.")
     } else {
         console.log("ERROR: Unknown.")

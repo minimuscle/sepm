@@ -28,24 +28,36 @@ class Tours extends Component {
     if (this.state.types.length <= 0) {
       return <tr><td colSpan="4">Loading...</td></tr>
     } else {
-      return (
-        this.state.types.map((val, key) => {
-          return (
-            <tr key={key}>
-              <td>{key}</td>
-              <td>{val.name}</td>
-              <td><Button variant="light" onClick={() => this.editType(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-              <td><Button variant="danger" onClick={() => this.deleteType(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
-            </tr>
-          )
-        }))
+      if (this.props.userType == "admin") {
+        return (
+          this.state.types.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{val.name}</td>
+                <td><Button variant="light" onClick={() => this.editType(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+                <td><Button variant="danger" onClick={() => this.deleteType(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+              </tr>
+            )
+          }))
+      } else {
+        return (
+          this.state.types.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{val.name}</td>
+              </tr>
+            )
+          }))
+      }
     }
   }
 
   handleClose = () => {
     this.setState({ show: false })
   }
-  
+
   handleShow = () => {
     this.setState({ show: true })
   }
@@ -53,20 +65,20 @@ class Tours extends Component {
   handleCloseDelete = () => {
     this.setState({ show: false })
     fetch('http://localhost:9000/api/delete/types', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.state.name,
-        })
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
       })
+    })
     window.location.reload();
   }
 
   changeView(view) {
-      this.props.view(view);
+    this.props.view(view);
   }
 
   editType(name) {
@@ -79,6 +91,43 @@ class Tours extends Component {
     this.handleShow();
   }
 
+  showExtraHeaders() {
+    if (this.props.userType == "admin") {
+      return (
+        <div>
+          <div className="title"><h1>Tour Types</h1>
+            <Button className="addBtn" onClick={() => this.changeView('add-type')}>Add New Type</Button></div>
+
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tour Type</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+              {this.renderTours()}
+            </thead>
+          </Table>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className="title"><h1>Tour Types</h1></div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tour Type</th>
+              </tr>
+              {this.renderTours()}
+            </thead>
+          </Table>
+        </div>
+      )
+    }
+  }
 
   render() {
     return (
@@ -96,24 +145,9 @@ class Tours extends Component {
               Confirm Deletion
           </Button>
           </Modal.Footer>
-          </Modal>
-          {/** TODO: Add CSS to this instead of the BRs */}
-          <div className="title"><h1>Tour Types</h1>
-          <Button className="addBtn" onClick={() => this.changeView('add-type')}>Add New Type</Button></div>
-            
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Tour Type</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-                {this.renderTours()}
-              </thead>
-            </Table>
-          <Row>{this.props.view}</Row>
-        </Container>
+        </Modal>
+        {this.showExtraHeaders()}
+      </Container>
     )
   }
 }

@@ -21,7 +21,7 @@ class Tours extends Component {
   handleClose = () => {
     this.setState({ show: false })
   }
-  
+
   handleShow = () => {
     this.setState({ show: true })
   }
@@ -29,15 +29,15 @@ class Tours extends Component {
   handleCloseDelete = () => {
     this.setState({ show: false })
     fetch('http://localhost:9000/api/delete/tour', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.state.name,
-        })
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
       })
+    })
     window.location.reload();
   }
 
@@ -55,25 +55,84 @@ class Tours extends Component {
       });
   }
 
+  showExtraHeaders() {
+    if (this.props.userType == "admin") {
+      return (
+        <div>
+          <div className="title"><h1>Tours</h1>
+            <Button className="addBtn" onClick={() => this.changeView('add-tour')}>Add New Tour</Button></div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Locations</th>
+                <th>Types</th>
+                <th>Total Time</th>
+                <th>Edit</th>
+                <th>Copy</th>
+                <th>Delete</th>
+              </tr>
+              {this.renderTours()}
+            </thead>
+          </Table>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className="title"><h1>Tours</h1></div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Locations</th>
+                <th>Types</th>
+                <th>Total Time</th>
+              </tr>
+              {this.renderTours()}
+            </thead>
+          </Table>
+        </div>
+      )
+    }
+  }
+
   renderTours() {
     if (this.state.tours.length <= 0) {
       return <tr><td colSpan="4">Loading...</td></tr>
     } else {
-      return (
-        this.state.tours.map((val, key) => {
-          return (
-            <tr key={key}>
-              <td>{key}</td>
-              <td>{val.name}</td>
-              <td>{val.locations.join(', ')}</td>
-              <td>{val.type}</td>
-              <td>{val.time}</td>
-              <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
-              <td><Button variant="light" onClick={() => this.copyTour(val.name)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
-              <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
-            </tr>
-          )
-        }))
+      if (this.props.userType == "admin") {
+        return (
+          this.state.tours.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{val.name}</td>
+                <td>{val.locations.join(', ')}</td>
+                <td>{val.type}</td>
+                <td>{val.time}</td>
+                <td><Button variant="light" onClick={() => this.editTour(val.name)}><FontAwesomeIcon icon={faEdit} color="gray" /></Button></td>
+                <td><Button variant="light" onClick={() => this.copyTour(val.name)}><FontAwesomeIcon icon={faCopy} color="gray" /></Button></td>
+                <td><Button variant="danger" onClick={() => this.deleteTour(val.name)}><FontAwesomeIcon icon={faTimes} /></Button></td>
+              </tr>
+            )
+          }))
+      } else {
+        return (
+          this.state.tours.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{val.name}</td>
+                <td>{val.locations.join(', ')}</td>
+                <td>{val.type}</td>
+                <td>{val.time}</td>
+              </tr>
+            )
+          }))
+      }
     }
   }
 
@@ -113,26 +172,7 @@ class Tours extends Component {
           </Button>
           </Modal.Footer>
         </Modal>
-        <div className="title"><h1>Tours</h1>
-        <Button className="addBtn" onClick={() => this.changeView('add-tour')}>Add New Tour</Button></div>
-        
-        {/*<Button onClick={() => this.changeView('edit-tour')}>Edit Tour</Button>*/}
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Locations</th>
-                <th>Types</th>
-                <th>Total Time</th>
-                <th>Edit</th>
-                <th>Copy</th>
-                <th>Delete</th>
-              </tr>
-              {/** TODO: Insert Tour Data here */}
-              {this.renderTours()}
-            </thead>
-          </Table>
+        {this.showExtraHeaders()}
       </Container>
     )
   }

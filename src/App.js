@@ -12,6 +12,7 @@ import AddLocations from './components/Locations/AddLocations';
 import EditLocations from './components/Locations/EditLocations';
 import CopyLocations from './components/Locations/CopyLocations';
 import Login from './components/Login/Login';
+import Settings from './components/Settings/Settings';
 
 //Boostrap Imports - Design work
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -26,6 +27,8 @@ class App extends Component {
       edit_coordinates: '',
       edit_description: '',
       edit_types: '',
+      user: '',
+      userType: 'assistant',
     }
   }
 
@@ -35,10 +38,20 @@ class App extends Component {
     })
   }
 
+  userType(user) {
+    this.setState({
+      user: user
+    })
+  }
+
+  setUserType(user) {
+    this.setState({
+      userType: user
+    })
+  }
+
 
   //Set Edit "X" to be that when the prop is set by a component
-
-
   setName(name) {
     this.setState({
       edit_name: name
@@ -57,45 +70,75 @@ class App extends Component {
 
 
   renderComponents() {
-    switch (this.state.view) {
-      case 'tours':
-        return <Tours view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+    if (!this.state.user == "") {
+      switch (this.state.view) {
+        case 'tours':
+          return <Tours userType={this.state.userType} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
-      case 'edit-tour':
-        return <EditTours view={this.updateView.bind(this)} title={this.state.edit_name} />
+        case 'edit-tour':
+          return <EditTours userType={this.state.userType} view={this.updateView.bind(this)} title={this.state.edit_name} />
 
-      case 'types':
-        //The bind sets the 'view' to the variable that is set in <Types/>
-        return <Types view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
+        case 'types':
+          //The bind sets the 'view' to the variable that is set in <Types/>
+          return <Types userType={this.state.userType} view={this.updateView.bind(this)} edit={this.setName.bind(this)} />
 
-      case 'add-tour':
-        return <AddTours />
+        case 'add-tour':
+          return <AddTours userType={this.state.userType} />
 
-      case 'copy-tour':
-        return <CopyTours name={this.state.edit_name}/>
+        case 'copy-tour':
+          return <CopyTours userType={this.state.userType} name={this.state.edit_name} />
 
-      case 'add-location':
-        return <AddLocations />
+        case 'add-location':
+          return <AddLocations userType={this.state.userType} />
 
-      case 'edit-location':
-        return <EditLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+        case 'edit-location':
+          return <EditLocations userType={this.state.userType} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
-      case 'copy-location':
-        return <CopyLocations view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
+        case 'copy-location':
+          return <CopyLocations userType={this.state.userType} view={this.updateView.bind(this)} name={this.state.edit_name} coordinates={this.state.edit_coordinates} description={this.state.edit_description} />
 
-      case 'locations':
-        return <Locations view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
+        case 'locations':
+          return <Locations userType={this.state.userType} view={this.updateView.bind(this)} edit_name={this.setName.bind(this)} edit_coordinates={this.setCoordinates.bind(this)} edit_description={this.setDescription.bind(this)} />
 
-      case 'add-type':
-        return <AddTypes />
+        case 'add-type':
+          return <AddTypes userType={this.state.userType} />
 
-      case 'edit-type':
-        return <EditTypes view={this.updateView.bind(this)} title={this.state.edit_name} />
-      //Default means that if there is an error or not a 'case' then it defaults to the tours page
-      default:
-        return <Login />
+        case 'edit-type':
+          return <EditTypes userType={this.state.userType} view={this.updateView.bind(this)} title={this.state.edit_name} />
+        
+        case 'settings':
+          return <Settings userType={this.state.userType} view={this.updateView.bind(this)} setUserType={this.userType.bind(this)}/>
+        //Default means that if there is an error or not a 'case' then it defaults to the tours page
+        default:
+          return <Login view={this.updateView.bind(this)} user={this.userType.bind(this)} userType={this.setUserType.bind(this)} />
+      }
+    } else {
+      return <Login view={this.updateView.bind(this)} user={this.userType.bind(this)} userType={this.setUserType.bind(this)} />
     }
   }
+
+  loginInfo() {
+    if (this.state.user == "") {
+      return <Navbar.Text><a className="ButtonLogin" onClick={this.login}>Login</a></Navbar.Text>
+    } else {
+      return <Navbar.Text>Signed in as <a className="ButtonLogin" onClick={this.settings}>{this.state.user}.</a>   |  <a className="ButtonLogout" onClick={this.logout}>Logout</a></Navbar.Text>
+    }
+  }
+
+  login = () => {
+    this.updateView('login')
+  }
+
+  logout = () => {
+    this.userType("");
+    this.updateView('login');
+  }
+
+  settings = () => {
+    //this.setUserType("admin");
+    this.updateView('settings');
+  }
+
 
   render() {
     return (
@@ -110,9 +153,7 @@ class App extends Component {
               <Nav.Link onClick={() => this.updateView('types')}>Tour Types</Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <Navbar.Text>
-            Signed in as <a href="#login">John Doe</a>
-          </Navbar.Text>
+          {this.loginInfo()}
         </Navbar>
         {this.renderComponents()}
       </Container>

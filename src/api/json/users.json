@@ -1,0 +1,1 @@
+[{"username":"John","password":"1234","type":"admin","active":true,"login":true},{"username":"James","password":"1234","type":"admin","active":true,"login":true},{"username":"Jimmy","password":"4321","type":"assistant","active":true,"login":false},{"username":"Jake","password":"12345","type":"assistant","active":true,"login":false}]

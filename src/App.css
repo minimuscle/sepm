@@ -9,6 +9,24 @@
 }
 
 .login {
-    margin: 100px auto auto auto;
+    margin: 100px;
+}
+
+.login h1 {
     text-align: center;
+}
+
+.ButtonLogin {
+    cursor: pointer;
+}
+
+.ButtonLogout {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: normal;
+    color: #797979;
+}
+
+.floatright {
+    float: right;
 }
