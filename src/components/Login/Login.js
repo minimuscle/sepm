@@ -37,6 +37,7 @@ class App extends Component {
         this.props.view(view);
     }
 
+
     handleSubmit = () => {
         const {username, password } = this.state;
         fetch('http://localhost:9000/api/login', {
@@ -52,7 +53,12 @@ class App extends Component {
           })
           .then(res => {
             if (res.status == "202") {
-                this.props.userType(username);
+                this.props.user(username);
+                this.props.userType("assistant");
+                this.changeView('locations');
+            } else if (res.status == "203") {
+                this.props.user(username);
+                this.props.userType("admin");
                 this.changeView('locations');
             }
           })

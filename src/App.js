@@ -12,6 +12,7 @@ import AddLocations from './components/Locations/AddLocations';
 import EditLocations from './components/Locations/EditLocations';
 import CopyLocations from './components/Locations/CopyLocations';
 import Login from './components/Login/Login';
+import Settings from './components/Settings/Settings';
 
 //Boostrap Imports - Design work
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -104,12 +105,15 @@ class App extends Component {
 
         case 'edit-type':
           return <EditTypes userType={this.state.userType} view={this.updateView.bind(this)} title={this.state.edit_name} />
+        
+        case 'settings':
+          return <Settings userType={this.state.userType} view={this.updateView.bind(this)} setUserType={this.userType.bind(this)}/>
         //Default means that if there is an error or not a 'case' then it defaults to the tours page
         default:
-          return <Login view={this.updateView.bind(this)} userType={this.userType.bind(this)} />
+          return <Login view={this.updateView.bind(this)} user={this.userType.bind(this)} userType={this.setUserType.bind(this)} />
       }
     } else {
-      return <Login view={this.updateView.bind(this)} userType={this.userType.bind(this)} />
+      return <Login view={this.updateView.bind(this)} user={this.userType.bind(this)} userType={this.setUserType.bind(this)} />
     }
   }
 
@@ -131,8 +135,8 @@ class App extends Component {
   }
 
   settings = () => {
-    this.setUserType("admin");
-    this.updateView('locations');
+    //this.setUserType("admin");
+    this.updateView('settings');
   }
 
 

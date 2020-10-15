@@ -26,3 +26,7 @@
     font-weight: normal;
     color: #797979;
 }
+
+.floatright {
+    float: right;
+}
